@@ -1,12 +1,40 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './views/App'
+import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import configureStore from './configureStore'
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import './style/index.scss'
+import 'react-toastify/dist/ReactToastify.css'
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const store = configureStore()
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#fff',
+      main: 'rgb(23, 105, 170)',
+      dark: '#000',
+    },
+    secondary: {
+      main: '#f44336',
+    },
+  },
+  typography: {
+    useNextVariants: true,
+    fontFamily: ['Montserrat', 'sans-serif'].join(','),
+  },
+})
+
+ReactDOM.render(
+  <BrowserRouter>
+    <Provider store={store}>
+      <MuiThemeProvider theme={theme}>
+        <App />
+      </MuiThemeProvider>
+    </Provider>
+  </BrowserRouter>,
+  document.getElementById('root')
+)

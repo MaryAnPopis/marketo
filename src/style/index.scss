@@ -1,0 +1,107 @@
+$primaryColor:#666EE8;
+$bgColor:#F4F5FA;
+$fontDark:#8A8E9D;
+$fontLight:#232323;
+$white:#fff;
+$lightGrey:#EEEFF3;
+$lightFont : #75758B;
+$danger: #e74c3c;
+
+
+html,
+body,
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #F4F5FA;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+}
+
+a{
+  text-decoration: none;
+  color:$fontDark;
+}
+
+
+a:hover {
+   color: $primaryColor;
+}
+
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+
+nav li {
+  display: inline-block; }
+
+nav a {
+  display: block;
+  padding: 6px 12px;
+  text-decoration: none;
+}
+
+li {
+  list-style-type: none;
+}
+
+p{
+  margin:0;
+}
+
+.form-text{
+  font-size: 0.7rem;
+  color:$lightFont;
+}
+
+.text-danger{
+  color: $danger;
+}
+.invalid{
+  border:1px solid $danger
+  }
+
+.primary-color{
+  color: $primaryColor
+}
+
+.mb-1{
+  margin-bottom: 1rem;
+}
+
+.mb-2{
+  margin-bottom: 2rem;
+}
+
+
+.btn{
+  border: none;
+  cursor: pointer;
+  font-size: 1.3rem;
+  background-color: $primaryColor;
+  color: white;
+  outline: none;
+  padding: 0.6875rem 2.5rem;
+  width: 100%;
+}
+
+.btn:hover {
+  background-color: transparent;
+  border: 2px solid $primaryColor;
+  color: $primaryColor;
+}
+
+
+.carousel {
+  max-height: 34rem;
+}
+
+.carousel .slide {
+  background-color: #fff;
+}
+
