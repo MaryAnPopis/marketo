@@ -3,6 +3,7 @@ export const API_URL = 'http://localhost:8080/v1'
 export const EMPTY_STATE = {
   featuredProducts: [],
   productsCurrentPage: [],
+  productDetails: [{ images: [] }, { specs: [] }, { subCategories: [] }, { category: {} }],
 }
 
 export const saveLocalStorage = (state, key = 'state') => {
@@ -34,6 +35,18 @@ export const post = (path, data) => {
       'Content-Type': 'application/json',
     },
   })
+    .then(res => {
+      return res.json()
+    })
+    .then(data => {
+      return data
+    })
+    .catch(err => {
+      throw err
+    })
+}
+export const getByParam = (path, param) => {
+  return fetch(`${API_URL}/${path}/${param}`)
     .then(res => {
       return res.json()
     })

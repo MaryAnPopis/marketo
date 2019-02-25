@@ -54,6 +54,10 @@ p{
   margin:0;
 }
 
+.link-primary{
+  color: $primaryColor;
+}
+
 .form-text{
   font-size: 0.7rem;
   color:$lightFont;
@@ -77,8 +81,6 @@ p{
 .mb-2{
   margin-bottom: 2rem;
 }
-
-
 .btn{
   border: none;
   cursor: pointer;
@@ -94,11 +96,6 @@ p{
   background-color: transparent;
   border: 2px solid $primaryColor;
   color: $primaryColor;
-}
-
-
-.carousel {
-  max-height: 34rem;
 }
 
 .carousel .slide {

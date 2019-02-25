@@ -120,7 +120,7 @@ export class Home extends Component {
             Products
           </Typography>
           <div>
-            <Grid container spacing={8} justify="center" alignItems="center">
+            <Grid container spacing={24} justify="center" alignItems="center">
               <Grid item xs={12} sm={6} md={3}>
                 <ProductCard
                   src="https://i.imgur.com/zMWz9Xa.jpg"

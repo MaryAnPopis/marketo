@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import colors from '../style/colors'
 import logo from '../img/logo.svg'
@@ -15,6 +16,8 @@ import { withStyles } from '@material-ui/core/styles'
 import classNames from 'classnames'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import Grid from '@material-ui/core/Grid'
+
+import { fetchCategories } from '../actions/categoryActions'
 
 const styles = theme => ({
   badge: {
@@ -72,6 +75,10 @@ export class Menu extends Component {
     anchorEl: null,
   }
 
+  componentDidMount() {
+    this.props.dispatch(fetchCategories())
+  }
+
   handlePopoverOpen = event => {
     this.setState({ anchorEl: event.currentTarget })
   }
@@ -80,7 +87,7 @@ export class Menu extends Component {
     this.setState({ anchorEl: null })
   }
   render() {
-    const { classes } = this.props
+    const { classes, categories } = this.props
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
     return (
@@ -139,24 +146,15 @@ export class Menu extends Component {
             </Grid>
             <div className={classes.linkMenus}>
               <Grid container>
-                <Grid xs={12} item sm>
-                  <Link to="/">Camera & Photo</Link>
-                </Grid>
-                <Grid xs={12} item sm>
-                  <Link to="/">Cell Phone</Link>
-                </Grid>
-                <Grid xs={12} item sm>
-                  <Link to="/">Cell Phone</Link>
-                </Grid>
-                <Grid xs={12} item sm>
-                  <Link to="/">TVs & Video</Link>
-                </Grid>
-                <Grid xs={12} item sm>
-                  <Link to="/">Video Games</Link>
-                </Grid>
-                <Grid xs={12} item sm>
-                  <Link to="/">Books</Link>
-                </Grid>
+                {categories.map(category => {
+                  return (
+                    <Grid xs={12} item sm key={category.id}>
+                      <Link key={category.id} to={`/category/${category.id}`}>
+                        {category.name}
+                      </Link>
+                    </Grid>
+                  )
+                })}
               </Grid>
             </div>
           </Style.Container>
@@ -166,7 +164,15 @@ export class Menu extends Component {
   }
 }
 
-export default withStyles(styles)(Menu)
+const mapStateToProps = state => {
+  return {
+    categories: state.categories.categories,
+    loading: state.product.loading,
+    error: state.product.error,
+  }
+}
+
+export default connect(mapStateToProps)(withStyles(styles)(Menu))
 
 const Style = {}
 
