@@ -2,10 +2,12 @@ import {
   FETCH_PRODUCT_BEGIN,
   FETCH_PRODUCT_SUCCESS,
   FETCH_PRODUCT_FAILURE,
+  FETCH_PRODUCT_BY_CATEGORY_SUCCESS,
 } from '../actions/productActions'
 
 const INITIAL_STATE = {
   productDetails: [],
+  products: [],
   loading: false,
   error: null,
 }
@@ -30,14 +32,15 @@ export default function product(state = INITIAL_STATE, action) {
         productDetails: action.payload.product,
       }
 
+    case FETCH_PRODUCT_BY_CATEGORY_SUCCESS:
+      // All done: set loading "false".
+      // Also, replace the items with the ones from the server
+      return {
+        ...state,
+        loading: false,
+        products: action.payload.products,
+      }
     case FETCH_PRODUCT_FAILURE:
-      // The request failed. It's done. So set loading to "false".
-      // Save the error, so we can display it somewhere.
-      // Since it failed, we don't have items to display anymore, so set `items` empty.
-      //
-      // This is all up to you and your app though:
-      // maybe you want to keep the items around!
-      // Do whatever seems right for your use case.
       return {
         ...state,
         loading: false,

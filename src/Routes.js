@@ -7,6 +7,7 @@ import Login from './views/Login'
 import Signup from './views/Signup'
 import Profile from './views/Profile'
 import ProductDetails from './views/ProductDetails'
+import ProductList from './views/ProducList'
 import Error404 from './components/Error404'
 
 const Routes = () => (
@@ -16,6 +17,7 @@ const Routes = () => (
       <Route exact path="/login" component={Login} />
       <Route exact path="/signup" component={Signup} />
       <Route exact path="/product/:idProduct" component={ProductDetails} />
+      <Route exact path="/category/:idCategory" component={ProductList} />
       <PrivateRoute exact path="/profile" component={Profile} />
       <Route component={Error404} />
     </Switch>

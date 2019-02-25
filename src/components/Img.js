@@ -35,5 +35,5 @@ Style.Icon = styled.div`
 `
 Style.Img = styled.img`
   width: 100%;
-  height: 100%;
+  height: auto;
 `
