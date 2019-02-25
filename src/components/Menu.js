@@ -149,9 +149,9 @@ export class Menu extends Component {
                 {categories.map(category => {
                   return (
                     <Grid xs={12} item sm key={category.id}>
-                      <Link key={category.id} to={`/category/${category.id}`}>
+                      <a key={category.id} href={`/category/${category.id}`}>
                         {category.name}
-                      </Link>
+                      </a>
                     </Grid>
                   )
                 })}
