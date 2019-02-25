@@ -1,17 +1,13 @@
-import { createStore } from 'redux'
-import Reducer from './reducer'
+import { createStore, applyMiddleware, compose } from 'redux'
+import rootReducer from './reducer/rootReducer'
 import throttle from 'lodash/throttle'
-
+import thunk from 'redux-thunk'
 import { saveLocalStorage, loadLocalStorage } from './services'
 
 const configureStore = () => {
   const persistedState = loadLocalStorage('state')
-
-  let store = createStore(
-    Reducer,
-    persistedState,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+  let store = createStore(rootReducer, persistedState, composeEnhancers(applyMiddleware(thunk)))
 
   store.subscribe(
     throttle(() => {
