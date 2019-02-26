@@ -102,3 +102,17 @@ p{
   background-color: #fff;
 }
 
+.move-bin{
+  @media (max-width: 960px) {
+    order: -1;
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    top: 4rem;
+  }
+
+}
+
+.rubik{
+  font-family: 'Rubik', sans-serif;
+}
