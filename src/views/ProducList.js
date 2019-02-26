@@ -69,8 +69,9 @@ export class ProducList extends Component {
             <Grid container spacing={24} justify="center" alignItems="center">
               {productList.map(product => {
                 return (
-                  <Grid item xs={12} sm={6} md={3}>
+                  <Grid item xs={12} sm={6} md={3} key={product.id}>
                     <ProductCard
+                      productId={product.id}
                       src={product.image}
                       sizeWidth="14.375rem"
                       sizeHeight="14.375rem"
