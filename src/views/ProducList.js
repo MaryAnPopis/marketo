@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import ReactPaginate from 'react-paginate'
 
 import { fetchProductByCategory } from '../actions/productActions'
 
@@ -23,15 +24,32 @@ const styles = theme => ({
     },
   },
 })
-
+const MAX_PRODUCTS = 2
 export class ProducList extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      data: [],
+      currentPage: this.props.productPage.number,
+    }
+  }
   componentDidMount() {
     const idCategory = this.props.match.params.idCategory
-    this.props.dispatch(fetchProductByCategory(idCategory))
-    console.log(this.props.productList)
+    this.props.dispatch(fetchProductByCategory(idCategory, 0, MAX_PRODUCTS))
   }
+
+  handlePageChange = page => {
+    this.setState({
+      currentPage: page.selected,
+    })
+
+    const idCategory = this.props.match.params.idCategory
+    this.props.dispatch(fetchProductByCategory(idCategory, page.selected, MAX_PRODUCTS))
+  }
+
   render() {
-    const { productList, error, loading } = this.props
+    const { productList, error, loading, classes, productPage } = this.props
 
     if (error) {
       return <div>Error! {error.message}</div>
@@ -40,37 +58,52 @@ export class ProducList extends Component {
     if (loading) {
       return <Loader />
     }
-    const { classes } = this.props
-    return (
-      <div>
-        <Menu />
-        <div className={classNames(classes.layout)}>
-          <Grid container spacing={24} justify="center" alignItems="center">
-            {productList.map(product => {
-              return (
-                <Grid item xs={12} sm={6} md={3}>
-                  <ProductCard
-                    src={product.image}
-                    sizeWidth="14.375rem"
-                    sizeHeight="14.375rem"
-                    alt={product.name}
-                    productName={product.name}
-                    price={product.price}
-                    url={`/product/${product.id}`}
-                  />
-                </Grid>
-              )
-            })}
-          </Grid>
+
+    if (!productList) {
+      return <Loader />
+    } else {
+      return (
+        <div>
+          <Menu />
+          <div className={classNames(classes.layout)}>
+            <Grid container spacing={24} justify="center" alignItems="center">
+              {productList.map(product => {
+                return (
+                  <Grid item xs={12} sm={6} md={3}>
+                    <ProductCard
+                      src={product.image}
+                      sizeWidth="14.375rem"
+                      sizeHeight="14.375rem"
+                      alt={product.name}
+                      productName={product.name}
+                      price={product.price}
+                      url={`/product/${product.id}`}
+                    />
+                  </Grid>
+                )
+              })}
+            </Grid>
+
+            <ReactPaginate
+              previousLabel={<li>porfa</li>}
+              pageRangeDisplayed={2}
+              marginPagesDisplayed={1}
+              breakLabel="..."
+              nextLabel={<li>porfa</li>}
+              pageCount={productPage.totalPages}
+              onPageChange={this.handlePageChange}
+            />
+          </div>
         </div>
-      </div>
-    )
+      )
+    }
   }
 }
 
 const mapStateToProps = state => {
   return {
     productList: state.product.products.content,
+    productPage: state.product.products,
     loading: state.product.loading,
     error: state.product.error,
   }

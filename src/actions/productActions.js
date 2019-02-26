@@ -30,17 +30,29 @@ export const fetchProduct = id => {
       .then(handleErrors)
       .then(res => res.json())
       .then(json => {
-        dispatch(fetchProductsSuccess(json))
+        fetch(`${API_URL}/products/category/${json.category.id}?page=0&size=5/`)
+          .then(handleErrors)
+          .then(res => res.json())
+          .then(relatedProducts => {
+            const product = {
+              product: json,
+              relatedProducts,
+            }
+            dispatch(fetchProductsSuccess(product))
+            return json
+          })
+
         return json
       })
       .catch(error => dispatch(fetchProductsFailure(error)))
   }
 }
-
-export const fetchProductByCategory = id => {
+//  /products/category/${id}?page=${page}&size=${size}/
+// /products?page=${page}&size=${size}
+export const fetchProductByCategory = (id, page, size) => {
   return dispatch => {
     dispatch(fetchProductsBegin())
-    return fetch(`${API_URL}/products/category/${id}?page=0&size=8/`)
+    return fetch(`${API_URL}/products/category/${id}?page=${page}&size=${size}/`)
       .then(handleErrors)
       .then(res => res.json())
       .then(json => {
