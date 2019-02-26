@@ -49,7 +49,7 @@ class ProductDetails extends React.Component {
       return <Loader />
     }
 
-    if (!productDetails.images) {
+    if (!productDetails) {
       return <div />
     } else {
       return (
