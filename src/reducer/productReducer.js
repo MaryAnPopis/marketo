@@ -6,7 +6,27 @@ import {
 } from '../actions/productActions'
 
 const INITIAL_STATE = {
-  productDetails: [],
+  productDetails: {
+    id: 0,
+    name: ' ',
+    price: 0,
+    brand: '',
+    description: '',
+    additionalInfo: '',
+    tags: [],
+    category: {
+      id: 0,
+      name: '',
+    },
+    images: [],
+    specs: [],
+    subCategories: [
+      {
+        id: 0,
+        name: ' ',
+      },
+    ],
+  },
   products: [],
   loading: false,
   error: null,
