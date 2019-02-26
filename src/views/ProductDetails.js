@@ -79,7 +79,7 @@ class ProductDetails extends React.Component {
               </Grid>
               <Grid item xs={12} sm={6} md={5}>
                 <Style.Card>
-                  <Style.Title className="mb-1">{productDetails.name}</Style.Title>
+                  <Style.Title className="mb-1 rubik">{productDetails.name}</Style.Title>
                   <div className="mb-1">
                     <Style.Tags>
                       Categories:{' '}
@@ -114,13 +114,13 @@ class ProductDetails extends React.Component {
                 </Style.Card>
               </Grid>
               <Grid item xs={12} sm={12} lg={12}>
-                <Style.SubTitle>Description</Style.SubTitle>
+                <Style.SubTitle className="rubik">Description</Style.SubTitle>
                 <Style.DescriptionP className="mb-2">
                   {productDetails.description}
                 </Style.DescriptionP>
               </Grid>
             </Grid>
-            <Style.AddInfo>RELATED PRODUCTS</Style.AddInfo>
+            <Style.AddInfo className="rubik">RELATED PRODUCTS</Style.AddInfo>
             <Style.Divider />
             <Grid container spacing={24} justify="center" alignItems="center">
               {relatedProducts.map(relatedProduct => {
@@ -163,19 +163,20 @@ Style.Title = styled.h1`
 `
 
 Style.SubTitle = styled.h2`
-  font-weight: 500;
+  font-weight: 300;
   color: ${colors.bgDark};
   font-size: 1.8rem;
 `
 
 Style.DescriptionP = styled.p`
-  font-weight: 500;
+  font-weight: 400;
   font-size: 1rem;
+  line-height: 1.6875rem;
   color: ${colors.fontDark};
 `
 
 Style.Tags = styled.p`
-  color: ${colors.lightFont};
+  color: ${colors.fontDark};
   font-size: 0.8rem;
 `
 Style.TagsDescription = styled.span`
@@ -220,14 +221,14 @@ Style.Divider = styled.div`
   margin: 1rem 0;
 `
 Style.AddInfo = styled.p`
-  color: ${colors.lightFont};
-  font-weight: 500;
+  line-height: 1.6875rem;
+  color: ${colors.fontDark};
   font-size: 1rem;
   margin: 0.7rem 0;
 `
 
 Style.Spec = styled.dt`
-  color: ${colors.lightFont};
+  color: ${colors.fontDark};
   margin: 1rem 0;
 `
 

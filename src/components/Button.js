@@ -34,4 +34,5 @@ export default Button
 const Style = {}
 Style.Button = styled.button`
   width: ${props => props.size.width};
+  font-family: 'Rubik', sans-serif;
 `
