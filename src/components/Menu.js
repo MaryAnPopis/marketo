@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import colors from '../style/colors'
@@ -86,10 +86,14 @@ export class Menu extends Component {
   handlePopoverClose = () => {
     this.setState({ anchorEl: null })
   }
+  handleCartClick = () => {
+    this.props.history.push(`/cart`)
+  }
   render() {
     const { classes, categories } = this.props
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
+
     return (
       <div>
         <Style.Container_User>
@@ -109,13 +113,14 @@ export class Menu extends Component {
                 </Link>
               </Grid>
               <Grid item xs={11} sm={6}>
-                <Input type="text" name="search" placeholder="Search..." />
+                <Input type="text" name="search" placeholder="Search products..." />
               </Grid>
               <Grid item xs={12} sm className={classes.icon}>
                 <IconButton
                   aria-label="Cart"
                   onMouseEnter={this.handlePopoverOpen}
                   onMouseLeave={this.handlePopoverClose}
+                  onClick={this.handleCartClick}
                 >
                   <Badge badgeContent={4} classes={{ badge: classes.badge }}>
                     <ShoppingCartIcon />
@@ -149,9 +154,9 @@ export class Menu extends Component {
                 {categories.map(category => {
                   return (
                     <Grid xs={12} item sm key={category.id}>
-                      <Link key={category.id} to={`/category/${category.id}`}>
+                      <a key={category.id} href={`/category/${category.id}`}>
                         {category.name}
-                      </Link>
+                      </a>
                     </Grid>
                   )
                 })}
@@ -172,7 +177,7 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(withStyles(styles)(Menu))
+export default withRouter(connect(mapStateToProps)(withStyles(styles)(Menu)))
 
 const Style = {}
 

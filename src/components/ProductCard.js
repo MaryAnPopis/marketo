@@ -34,16 +34,21 @@ const ProductCard = props => {
   return (
     <Style.Card>
       <Style.Image to={props.url} className="product_img">
-        <Img src={props.src} alt={props.alt} />
+        <Img
+          src={props.src}
+          alt={props.alt}
+          sizeWidth={props.sizeWidth}
+          sizeHeight={props.sizeHeight}
+        />
       </Style.Image>
-      <Typography align="center" variant="h6" className={classes.typography}>
+      <Style.Title align="center" variant="h6" className={classes.typography}>
         {props.productName}
-      </Typography>
+      </Style.Title>
       <Typography align="center" variant="h6" className={classes.priceTitle}>
         Price
       </Typography>
       <Typography align="center" className={classes.price}>
-        {props.price}
+        ${props.price}
       </Typography>
       <IconButton aria-label="Shopping Cart">
         <ShoppingCartOutlinedIcon className={classes.icon} />
@@ -62,6 +67,12 @@ ProductCard.propTypes = {
 export default withStyles(styles)(ProductCard)
 
 const Style = {}
+
+Style.Title = styled(Typography)`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
 
 Style.Card = styled.div`
   background-color: ${colors.white};
@@ -85,8 +96,9 @@ Style.Card = styled.div`
 `
 
 Style.Image = styled(Link)`
-  width: 14.375rem;
-  height: 14.375rem;
+  max-width: 14.375rem;
+  max-height: 14.375rem;
+
   padding-bottom: 1rem;
 
   @media (max-width: 457px) {

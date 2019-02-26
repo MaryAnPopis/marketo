@@ -1,13 +1,13 @@
 const primaryColor = '#666EE8'
 const bgColor = '#F4F5FA'
-const fontDark = '#8A8E9D'
+const fontDark = '#6b6f81'
 const fontLight = '#232323'
 const white = '#fff'
 const lightGrey = '#EEEFF3'
 const bgDark = '#353745'
 const lightFont = '#75758B'
 const danger = '#e74c3c'
-
+const black = '#464855'
 const colors = {
   primaryColor,
   bgColor,
@@ -18,6 +18,7 @@ const colors = {
   bgDark,
   lightFont,
   danger,
+  black,
 }
 
 export default colors

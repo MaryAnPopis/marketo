@@ -136,7 +136,7 @@ export class Home extends Component {
                   alt="computer imgage"
                   productName="HP 19' inches"
                   price="$200"
-                  url="/"
+                  url="/product/1"
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>

@@ -39,7 +39,7 @@ class ProductDetails extends React.Component {
   }
 
   render() {
-    const { classes, productDetails, error, loading } = this.props
+    const { classes, productDetails, error, loading, relatedProducts } = this.props
 
     if (error) {
       return <div>Error! {error.message}</div>
@@ -48,118 +48,106 @@ class ProductDetails extends React.Component {
     if (loading) {
       return <Loader />
     }
-    return (
-      <div>
-        <Menu />
-        <main className={classNames(classes.layout)}>
-          <Grid container spacing={24}>
-            <Grid item xs={12} sm={6} md={7}>
-              <Style.Card>
-                <Style.CarouselProduct
-                  showStatus={false}
-                  infiniteLoop
-                  autoPlay
-                  emulateTouch
-                  showIndicators={false}
-                  showArrows={false}
-                >
-                  {productDetails.images.map(image => {
-                    return (
-                      <div key={image.id}>
-                        <img className="zoom" src={image.url} alt={`by ${productDetails.name}`} />
-                      </div>
-                    )
-                  })}
-                </Style.CarouselProduct>
-              </Style.Card>
-            </Grid>
-            <Grid item xs={12} sm={6} md={5}>
-              <Style.Card>
-                <Style.Title className="mb-1">{productDetails.name}</Style.Title>
-                <div className="mb-1">
-                  <Style.Tags>
-                    Categories:{' '}
-                    {productDetails.subCategories.map(category => {
+
+    if (!productDetails.images) {
+      return <div />
+    } else {
+      return (
+        <div>
+          <Menu />
+          <main className={classNames(classes.layout)}>
+            <Grid container spacing={24}>
+              <Grid item xs={12} sm={6} md={7}>
+                <Style.Card>
+                  <Style.CarouselProduct
+                    showStatus={false}
+                    infiniteLoop
+                    autoPlay
+                    emulateTouch
+                    showIndicators={false}
+                    showArrows={false}
+                  >
+                    {productDetails.images.map(image => {
                       return (
-                        <Style.TagsDescription key={category.id}>
-                          {category.name}
-                        </Style.TagsDescription>
+                        <div key={image.id}>
+                          <img className="zoom" src={image.url} alt={`by ${productDetails.name}`} />
+                        </div>
                       )
                     })}
-                  </Style.Tags>
-                  <Style.Tags>
-                    Tags: <Style.TagsDescription>HDMI, LED</Style.TagsDescription>
-                  </Style.Tags>
-                </div>
+                  </Style.CarouselProduct>
+                </Style.Card>
+              </Grid>
+              <Grid item xs={12} sm={6} md={5}>
+                <Style.Card>
+                  <Style.Title className="mb-1 rubik">{productDetails.name}</Style.Title>
+                  <div className="mb-1">
+                    <Style.Tags>
+                      Categories:{' '}
+                      {productDetails.subCategories.map(category => {
+                        return (
+                          <Style.TagsDescription key={category.id}>
+                            {category.name}
+                          </Style.TagsDescription>
+                        )
+                      })}
+                    </Style.Tags>
+                    <Style.Tags>
+                      Tags: <Style.TagsDescription>HDMI, LED</Style.TagsDescription>
+                    </Style.Tags>
+                    <Style.Tags>
+                      Brand: <Style.TagsDescription>{productDetails.brand}</Style.TagsDescription>
+                    </Style.Tags>
+                  </div>
 
-                <Style.PriceWrapper>
-                  <Style.Price>${productDetails.price}</Style.Price>
-                </Style.PriceWrapper>
-                <Style.Divider />
-                <Style.AddInfo>{productDetails.additionalInfo}</Style.AddInfo>
-                <dl>
-                  {productDetails.specs.map(spec => {
-                    return <Style.Spec key={spec.id}>{spec.description}</Style.Spec>
-                  })}
-                </dl>
-                <Style.Divider className="mb-2" />
-                <Button name="Add To Cart" />
-              </Style.Card>
+                  <Style.PriceWrapper>
+                    <Style.Price>${productDetails.price}</Style.Price>
+                  </Style.PriceWrapper>
+                  <Style.Divider />
+                  <Style.AddInfo>{productDetails.additionalInfo}</Style.AddInfo>
+                  <dl>
+                    {productDetails.specs.map(spec => {
+                      return <Style.Spec key={spec.id}>{spec.description}</Style.Spec>
+                    })}
+                  </dl>
+                  <Style.Divider className="mb-2" />
+                  <Button name="Add To Cart" />
+                </Style.Card>
+              </Grid>
+              <Grid item xs={12} sm={12} lg={12}>
+                <Style.SubTitle className="rubik">Description</Style.SubTitle>
+                <Style.DescriptionP className="mb-2">
+                  {productDetails.description}
+                </Style.DescriptionP>
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={12} lg={12}>
-              <Style.SubTitle>Description</Style.SubTitle>
-              <Style.DescriptionP className="mb-2">{productDetails.description}</Style.DescriptionP>
+            <Style.AddInfo className="rubik">RELATED PRODUCTS</Style.AddInfo>
+            <Style.Divider />
+            <Grid container spacing={24} justify="center" alignItems="center">
+              {relatedProducts.map(relatedProduct => {
+                return (
+                  <Grid item xs={12} sm={6} md={3} key={relatedProduct.id}>
+                    <ProductCard
+                      src={relatedProduct.image}
+                      alt={relatedProduct.name}
+                      productName={relatedProduct.name}
+                      price={relatedProduct.price}
+                      url={`/product/${relatedProduct.id}`}
+                    />
+                  </Grid>
+                )
+              })}
             </Grid>
-          </Grid>
-          <Style.AddInfo>RELATED PRODUCTS</Style.AddInfo>
-          <Style.Divider />
-          <Grid container spacing={24} justify="center" alignItems="center">
-            <Grid item xs={12} sm={6} md={3}>
-              <ProductCard
-                src="https://i.imgur.com/zMWz9Xa.jpg"
-                alt="computer imgage"
-                productName="HP 19' inches"
-                price="$200"
-                url="/"
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <ProductCard
-                src="https://i.imgur.com/zMWz9Xa.jpg"
-                alt="computer imgage"
-                productName="HP 19' inches"
-                price="$200"
-                url="/"
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <ProductCard
-                src="https://i.imgur.com/zMWz9Xa.jpg"
-                alt="computer imgage"
-                productName="HP 19' inches"
-                price="$200"
-                url="/"
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <ProductCard
-                src="https://i.imgur.com/zMWz9Xa.jpg"
-                alt="computer imgage"
-                productName="HP 19' inches"
-                price="$200"
-                url="/"
-              />
-            </Grid>
-          </Grid>
-        </main>
-        <Footer />
-      </div>
-    )
+          </main>
+          <Footer />
+        </div>
+      )
+    }
   }
 }
 const mapStateToProps = state => {
   return {
-    productDetails: state.product.productDetails,
+    productDetails: state.product.productDetails.product,
+    relatedProducts: state.product.products.content,
     loading: state.product.loading,
     error: state.product.error,
   }
@@ -175,19 +163,20 @@ Style.Title = styled.h1`
 `
 
 Style.SubTitle = styled.h2`
-  font-weight: 500;
+  font-weight: 300;
   color: ${colors.bgDark};
   font-size: 1.8rem;
 `
 
 Style.DescriptionP = styled.p`
-  font-weight: 500;
+  font-weight: 400;
   font-size: 1rem;
+  line-height: 1.6875rem;
   color: ${colors.fontDark};
 `
 
 Style.Tags = styled.p`
-  color: ${colors.lightFont};
+  color: ${colors.fontDark};
   font-size: 0.8rem;
 `
 Style.TagsDescription = styled.span`
@@ -232,14 +221,14 @@ Style.Divider = styled.div`
   margin: 1rem 0;
 `
 Style.AddInfo = styled.p`
-  color: ${colors.lightFont};
-  font-weight: 500;
+  line-height: 1.6875rem;
+  color: ${colors.fontDark};
   font-size: 1rem;
   margin: 0.7rem 0;
 `
 
 Style.Spec = styled.dt`
-  color: ${colors.lightFont};
+  color: ${colors.fontDark};
   margin: 1rem 0;
 `
 
