@@ -19,7 +19,7 @@ const Routes = () => (
       <Route exact path="/signup" component={Signup} />
       <Route exact path="/product/:idProduct" component={ProductDetails} />
       <Route exact path="/category/:idCategory" component={ProductList} />
-      <Route exact path="/cart/" component={Cart} />
+      <Route exact path="/cart" component={Cart} />
       <PrivateRoute exact path="/profile" component={Profile} />
       <Route component={Error404} />
     </Switch>
