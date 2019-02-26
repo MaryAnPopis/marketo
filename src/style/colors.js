@@ -8,6 +8,8 @@ const bgDark = '#353745'
 const lightFont = '#75758B'
 const danger = '#e74c3c'
 const black = '#464855'
+const success = ' #29D094'
+
 const colors = {
   primaryColor,
   bgColor,
@@ -19,6 +21,7 @@ const colors = {
   lightFont,
   danger,
   black,
+  success,
 }
 
 export default colors
