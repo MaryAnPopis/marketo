@@ -106,6 +106,7 @@ const mapStateToProps = state => {
     productList: state.product.products.content,
     productPage: state.product.products,
     loading: state.product.loading,
+    addToCartLoading: state.product.addToCartLoading,
     error: state.product.error,
   }
 }
