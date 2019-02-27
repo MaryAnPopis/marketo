@@ -61,6 +61,23 @@ export const saveToCart = product => {
   }
 }
 
+export const updateShoppingCartlocal = updatedProduct => {
+  const key = 'cart'
+  let updatedShoppingCart = JSON.parse(localStorage.getItem(key))
+  try {
+    let getCart = JSON.parse(localStorage.getItem(key))
+    let foundProduct = getCart.find(item => item.id === updatedProduct.id)
+    let index = getCart.indexOf(foundProduct)
+    getCart[index] = updatedProduct
+    localStorage.setItem(key, JSON.stringify(getCart))
+    updatedShoppingCart = JSON.parse(localStorage.getItem(key))
+  } catch (err) {
+    console.error('save state error on local storage', err)
+  }
+
+  return updatedShoppingCart
+}
+
 export const getTotalCartItems = () => {
   let totalCartItems = -1
   const key = 'cart'

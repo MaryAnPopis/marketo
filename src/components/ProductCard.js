@@ -38,8 +38,10 @@ class ProductCard extends React.Component {
   constructor(props) {
     super(props)
 
+    const cartFromProps = !this.props.shoppingCart ? [] : this.props.shoppingCart
+
     this.state = {
-      shoppingCart: this.props.shoppingCart,
+      shoppingCart: cartFromProps,
       redirect: false,
       isInShoppingCart: false,
     }
