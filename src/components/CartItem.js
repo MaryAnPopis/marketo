@@ -157,7 +157,7 @@ Style.Quantity = styled(Input)`
 Style.Wrappper = styled(Grid)`
   display: flex;
   align-items: center;
-  border-bottom: 1.2px solid rgb(138, 142, 157, 0.3);
+  border-bottom: 1px solid rgb(138, 142, 157, 0.2);
   padding: 1rem 0;
 `
 
