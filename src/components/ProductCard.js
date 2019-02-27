@@ -9,7 +9,6 @@ import { connect } from 'react-redux'
 
 import Img from './Img'
 import colors from '../style/colors'
-import { loadLocalStorage } from '../services'
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined'
 import CheckCircleOutlinedIcon from '@material-ui/icons/CheckCircleOutlined'
 import IconButton from '@material-ui/core/IconButton'
