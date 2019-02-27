@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
 
 import Menu from '../components/Menu'
+import Footer from '../components/Footer'
 import colors from '../style/colors'
 import CartItem from '../components/CartItem'
 import Button from '../components/Button'
@@ -26,7 +28,7 @@ const styles = theme => ({
 
 export class Cart extends Component {
   render() {
-    const { classes } = this.props
+    const { classes, shoppingCart } = this.props
     return (
       <div>
         <Menu />
@@ -51,36 +53,45 @@ export class Cart extends Component {
                 </Grid>
               </Style.SubTitleWrapper>
             </Grid>
-
-            <CartItem
-              src="https://mk0conjrri8axjmrl.kinstacdn.com/wp-content/uploads/sites/2/2013/06/google-pixelbook-img-03.jpg"
-              name="Google Chromebook"
-              price="$1000"
-              total="$10000"
-              quantity="10"
-            />
-
-            <CartItem
-              src="https://mk0conjrri8axjmrl.kinstacdn.com/wp-content/uploads/sites/2/2013/06/google-pixelbook-img-03.jpg"
-              name="Google Chromebook"
-              price="$1000"
-              total="$10000"
-              quantity="10"
-            />
+            {!shoppingCart ? (
+              <div />
+            ) : (
+              shoppingCart.map(product => {
+                return (
+                  <CartItem
+                    id={product.id}
+                    src={product.image}
+                    name={product.name}
+                    price={`$${product.price}`}
+                    total={`$${product.price}`}
+                    quantity={product.quantity}
+                  />
+                )
+              })
+            )}
           </Grid>
-          <Grid container>
+          <Style.UpdateBtn container>
             <Grid item xs={12} sm={8} />
             <Grid item xs={12} sm={4}>
               <Button name="Update cart" />
             </Grid>
-          </Grid>
+          </Style.UpdateBtn>
         </main>
+        <Footer />
       </div>
     )
   }
 }
 
-export default withStyles(styles)(Cart)
+const mapStateToProps = state => {
+  return {
+    shoppingCart: state.product.shoppingCart,
+    loading: state.product.loading,
+    error: state.product.error,
+  }
+}
+
+export default connect(mapStateToProps)(withStyles(styles)(Cart))
 
 const Style = {}
 
@@ -97,4 +108,7 @@ Style.SubTitleWrapper = styled.div`
   @media (max-width: 960px) {
     display: none;
   }
+`
+Style.UpdateBtn = styled(Grid)`
+  margin-top: 2rem;
 `

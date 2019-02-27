@@ -27,6 +27,22 @@ export const loadLocalStorage = (key = 'state') => {
   }
 }
 
+export const getShoppingCart = () => {
+  let shoppingCart = []
+  const key = 'cart'
+  try {
+    const cart = JSON.parse(localStorage.getItem(key))
+    if (cart === null) {
+      shoppingCart = []
+    } else {
+      shoppingCart = cart
+    }
+  } catch (err) {
+    console.log(err)
+  }
+  return shoppingCart
+}
+
 export const saveToCart = product => {
   const key = 'cart'
 

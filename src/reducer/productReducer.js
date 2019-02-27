@@ -7,6 +7,8 @@ import {
   FETCH_PRODUCT_BY_ID_BEGIN,
 } from '../actions/productActions'
 
+import { getShoppingCart } from '../services'
+const localShoppingCart = getShoppingCart()
 const INITIAL_STATE = {
   productDetails: {
     id: 0,
@@ -40,7 +42,7 @@ const INITIAL_STATE = {
   loading: false,
   error: null,
   addToCartLoading: false,
-  shoppingCart: [],
+  shoppingCart: localShoppingCart,
   cartItems: 0,
 }
 
