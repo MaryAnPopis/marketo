@@ -27,6 +27,56 @@ export const loadLocalStorage = (key = 'state') => {
   }
 }
 
+export const getShoppingCart = () => {
+  let shoppingCart = []
+  const key = 'cart'
+  try {
+    const cart = JSON.parse(localStorage.getItem(key))
+    if (cart === null) {
+      shoppingCart = []
+    } else {
+      shoppingCart = cart
+    }
+  } catch (err) {
+    console.log(err)
+  }
+  return shoppingCart
+}
+
+export const saveToCart = product => {
+  const key = 'cart'
+
+  try {
+    if (localStorage.getItem(key) === null) {
+      let cart = []
+      cart.push(product)
+      localStorage.setItem(key, JSON.stringify(cart))
+    } else {
+      let getCart = JSON.parse(localStorage.getItem(key))
+      getCart.push(product)
+      localStorage.setItem(key, JSON.stringify(getCart))
+    }
+  } catch (err) {
+    console.error('save state error on local storage', err)
+  }
+}
+
+export const getTotalCartItems = () => {
+  let totalCartItems = -1
+  const key = 'cart'
+  try {
+    const cart = JSON.parse(localStorage.getItem(key))
+    if (cart === null) {
+      totalCartItems = 0
+    } else {
+      totalCartItems = cart.length
+    }
+  } catch (err) {
+    return { isExist: false }
+  }
+  return totalCartItems
+}
+
 export const post = (path, data) => {
   return fetch(`${API_URL}/${path}`, {
     method: 'POST',

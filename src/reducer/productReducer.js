@@ -3,13 +3,47 @@ import {
   FETCH_PRODUCT_SUCCESS,
   FETCH_PRODUCT_FAILURE,
   FETCH_PRODUCT_BY_CATEGORY_SUCCESS,
+  SAVE_TO_SHOPPING_CART_SUCCESS,
+  FETCH_PRODUCT_BY_ID_BEGIN,
 } from '../actions/productActions'
 
+import { getShoppingCart } from '../services'
+const localShoppingCart = getShoppingCart()
 const INITIAL_STATE = {
-  productDetails: [],
+  productDetails: {
+    id: 0,
+    name: ' ',
+    price: 0,
+    brand: '',
+    description: '',
+    additionalInfo: '',
+    tags: [],
+    category: {
+      id: 0,
+      name: '',
+    },
+    images: [],
+    specs: [],
+    subCategories: [
+      {
+        id: 0,
+        name: ' ',
+      },
+    ],
+  },
   products: [],
+  product: {
+    image: '',
+    name: '',
+    price: 0,
+    quantity: 1,
+    total: 0,
+  },
   loading: false,
   error: null,
+  addToCartLoading: false,
+  shoppingCart: localShoppingCart,
+  cartItems: 0,
 }
 
 export default function product(state = INITIAL_STATE, action) {
@@ -20,6 +54,12 @@ export default function product(state = INITIAL_STATE, action) {
       return {
         ...state,
         loading: true,
+        error: null,
+      }
+    case FETCH_PRODUCT_BY_ID_BEGIN:
+      return {
+        ...state,
+        addToCartLoading: true,
         error: null,
       }
 
@@ -40,6 +80,16 @@ export default function product(state = INITIAL_STATE, action) {
         loading: false,
         products: action.payload.products,
       }
+
+    case SAVE_TO_SHOPPING_CART_SUCCESS:
+      return {
+        ...state,
+        addToCartLoading: false,
+        product: action.payload.product,
+        cartItems: action.totalCartItems,
+        shoppingCart: action.cart,
+      }
+
     case FETCH_PRODUCT_FAILURE:
       return {
         ...state,

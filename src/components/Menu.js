@@ -90,7 +90,7 @@ export class Menu extends Component {
     this.props.history.push(`/cart`)
   }
   render() {
-    const { classes, categories } = this.props
+    const { classes, categories, cartItems } = this.props
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
 
@@ -122,7 +122,10 @@ export class Menu extends Component {
                   onMouseLeave={this.handlePopoverClose}
                   onClick={this.handleCartClick}
                 >
-                  <Badge badgeContent={4} classes={{ badge: classes.badge }}>
+                  <Badge
+                    badgeContent={!cartItems ? 0 : cartItems}
+                    classes={{ badge: classes.badge }}
+                  >
                     <ShoppingCartIcon />
                   </Badge>
                 </IconButton>
@@ -174,6 +177,7 @@ const mapStateToProps = state => {
     categories: state.categories.categories,
     loading: state.product.loading,
     error: state.product.error,
+    cartItems: state.product.cartItems,
   }
 }
 

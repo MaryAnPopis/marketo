@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-
+import { Link } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/DeleteOutlined'
@@ -30,11 +30,15 @@ class CartItem extends React.Component {
     return (
       <Style.Wrappper container>
         <Grid item xs={12} sm={12} md={1}>
-          <Style.Img src={this.props.src} alt={this.props.alt} />
+          <Link to={`/product/${this.props.id}`}>
+            <Style.Img src={this.props.src} alt={this.props.alt} />
+          </Link>
         </Grid>
         <Grid item xs={12} sm={12} md={3}>
           <Style.GridReponsive>
-            <Style.Name>{this.props.name}</Style.Name>
+            <Link to={`/product/${this.props.id}`}>
+              <Style.Name>{this.props.name}</Style.Name>
+            </Link>
           </Style.GridReponsive>
         </Grid>
         <Grid item xs={12} sm={12} md={2}>
@@ -104,7 +108,6 @@ Style.Wrappper = styled(Grid)`
   display: flex;
   align-items: center;
   border-bottom: 1.2px solid rgb(138, 142, 157, 0.3);
-  margin: 1rem 0;
   padding: 1rem 0;
 `
 
@@ -121,6 +124,9 @@ Style.Name = styled.p`
   font-weight: 400;
   color: ${colors.black};
   padding-left: 0.5rem;
+  &:hover {
+    color: ${colors.primaryColor};
+  }
   @media (max-width: 960px) {
     color: ${colors.primaryColor};
     &:before {

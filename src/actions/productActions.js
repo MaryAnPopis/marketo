@@ -1,19 +1,30 @@
-import { API_URL } from '../services'
+import { API_URL, saveToCart, getTotalCartItems, loadLocalStorage } from '../services'
 
 export const INIT_STATE = 'INIT_STATE'
 export const FETCH_PRODUCT_SUCCESS = 'FETCH_PRODUCT_SUCCESS'
 export const FETCH_PRODUCT_BY_CATEGORY_SUCCESS = 'FETCH_PRODUCT_BY_CATEGORY_SUCCESS'
+export const SAVE_TO_SHOPPING_CART_SUCCESS = 'SAVE_TO_SHOPPING_CART_SUCCESS'
 export const FETCH_PRODUCT_FAILURE = 'FETCH_PRODUCT_FAILURE'
 export const FETCH_PRODUCT_BEGIN = 'FETCH_PRODUCT_BEGIN'
+export const FETCH_PRODUCT_BY_ID_BEGIN = 'FETCH_PRODUCT_BY_ID_BEGIN'
 
 export const fetchProductsSuccess = product => ({
   type: FETCH_PRODUCT_SUCCESS,
   payload: { product },
 })
+
 export const fetchProductsByCategorySuccess = products => ({
   type: FETCH_PRODUCT_BY_CATEGORY_SUCCESS,
   payload: { products },
 })
+
+export const saveToShoppingCartSuccess = (product, totalCartItems, cart) => ({
+  type: SAVE_TO_SHOPPING_CART_SUCCESS,
+  payload: { product },
+  totalCartItems,
+  cart,
+})
+
 export const fetchProductsFailure = error => ({
   type: FETCH_PRODUCT_FAILURE,
   payload: { error },
@@ -21,6 +32,9 @@ export const fetchProductsFailure = error => ({
 
 export const fetchProductsBegin = () => ({
   type: FETCH_PRODUCT_BEGIN,
+})
+export const saveToShoppingCartBegin = () => ({
+  type: FETCH_PRODUCT_BY_ID_BEGIN,
 })
 
 export const fetchProduct = id => {
@@ -57,6 +71,31 @@ export const fetchProductByCategory = (id, page, size) => {
       .then(res => res.json())
       .then(json => {
         dispatch(fetchProductsByCategorySuccess(json))
+        return json
+      })
+      .catch(error => dispatch(fetchProductsFailure(error)))
+  }
+}
+
+export const saveToShoppingCart = id => {
+  return dispatch => {
+    dispatch(saveToShoppingCartBegin())
+    return fetch(`${API_URL}/products/${id}`)
+      .then(handleErrors)
+      .then(res => res.json())
+      .then(json => {
+        const totalCartItems = getTotalCartItems() + 1
+        const product = {
+          id: json.id,
+          image: json.images[0].url,
+          name: json.name,
+          price: json.price,
+          quantity: 1,
+          total: json.price,
+        }
+        saveToCart(product)
+        const cart = loadLocalStorage('cart')
+        dispatch(saveToShoppingCartSuccess(product, totalCartItems, cart))
         return json
       })
       .catch(error => dispatch(fetchProductsFailure(error)))
