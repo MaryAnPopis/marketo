@@ -11,8 +11,12 @@ import DeleteIcon from '@material-ui/icons/DeleteOutlined'
 import Input from '../components/Input'
 import colors from '../style/colors'
 
-import { updateShoppingCart, deleteProductInShoppingCart } from '../actions/productActions'
-
+import {
+  updateShoppingCart,
+  deleteProductInShoppingCart,
+  updateShoppingCartTotalsSuccess,
+} from '../actions/productActions'
+import { updateCartTotals } from '../services'
 class CartItem extends React.Component {
   constructor(props) {
     super(props)
@@ -21,9 +25,11 @@ class CartItem extends React.Component {
       quantity: this.props.quantity,
       total: this.props.total,
     }
+
+    this.shoppingCartTotals = this.shoppingCartTotals.bind(this)
   }
 
-  handleClick = () => {
+  deleteCartItem = () => {
     const product = { id: this.props.id }
     this.props.dispatch(deleteProductInShoppingCart(product))
   }
@@ -39,17 +45,63 @@ class CartItem extends React.Component {
       const roundTotal = Math.round(newTotal * 100) / 100
       this.setState({ total: roundTotal })
     }
-    //This is to round up the total
-    const roundTotalPlusProduct = Math.round((Number(this.state.total) + price) * 100) / 100
+    //This is to round up the total in each product
+    let roundTotalPlusProduct
+    let quantityHelper
+    let shoppingCartTotals
+    if (value > this.state.quantity) {
+      quantityHelper = Number(this.state.quantity) + 1
+      roundTotalPlusProduct = Math.round((Number(this.state.total) + price) * 100) / 100
+      shoppingCartTotals = this.shoppingCartTotals('SUM')
+    } else {
+      quantityHelper = Number(this.state.quantity) - 1
+      roundTotalPlusProduct = Math.round((Number(this.state.total) - price) * 100) / 100
+      shoppingCartTotals = this.shoppingCartTotals('RES')
+    }
     const updatedProduct = {
       id: id,
       image: src,
       name: this.props.name,
       price: price,
-      quantity: Number(this.state.quantity) + 1,
+      quantity: quantityHelper,
       total: roundTotalPlusProduct,
     }
     this.props.dispatch(updateShoppingCart(updatedProduct))
+
+    this.props.dispatch(updateShoppingCartTotalsSuccess(shoppingCartTotals))
+  }
+
+  shoppingCartTotals(type) {
+    // SHOPPING CART TOTALS
+    const myCurrentCart = this.props.shoppingCart
+    const cart = !myCurrentCart ? [] : myCurrentCart
+    let initialValue = 0
+    let sum = 0
+    let subtotal = 0
+    sum = cart.reduce(function(total, currentValue) {
+      return total + currentValue.total
+    }, initialValue)
+
+    switch (type) {
+      case 'SUM':
+        subtotal = Math.round((sum + this.props.price) * 100) / 100
+        break
+      case 'RES':
+        subtotal = Math.round((sum - this.props.price) * 100) / 100
+        break
+      default:
+        break
+    }
+
+    const recalculate = updateCartTotals(myCurrentCart)
+
+    const shoppingCartTotals = {
+      subtotal: subtotal,
+      total: recalculate.total,
+      shipping: recalculate.shipping,
+    }
+
+    return shoppingCartTotals
   }
 
   render() {
@@ -105,7 +157,7 @@ class CartItem extends React.Component {
           </Style.GridReponsive>
         </Grid>
         <Grid item xs={12} sm={12} md={1} className="move-bin">
-          <IconButton aria-label="Delete" onClick={this.handleClick}>
+          <IconButton aria-label="Delete" onClick={this.deleteCartItem}>
             <Style.DeleteBtn />
           </IconButton>
         </Grid>

@@ -4,6 +4,7 @@ import {
   getTotalCartItems,
   loadLocalStorage,
   modifyShoppingCartLocal,
+  updateCartTotals,
 } from '../services'
 
 export const INIT_STATE = 'INIT_STATE'
@@ -11,6 +12,7 @@ export const FETCH_PRODUCT_SUCCESS = 'FETCH_PRODUCT_SUCCESS'
 export const FETCH_PRODUCT_BY_CATEGORY_SUCCESS = 'FETCH_PRODUCT_BY_CATEGORY_SUCCESS'
 export const SAVE_TO_SHOPPING_CART_SUCCESS = 'SAVE_TO_SHOPPING_CART_SUCCESS'
 export const UPDATE_SHOPPING_CART_SUCCESS = 'UPDATE_SHOPPING_CART_SUCCESS'
+export const UPDATE_SHOPPING_CART_TOTALS_SUCCESS = 'UPDATE_SHOPPING_CART_TOTALS_SUCCESS'
 export const DELETE_PRODUCT_SHOPPING_CART_SUCCESS = 'DELETE_PRODUCT_SHOPPING_CART_SUCCESS'
 export const FETCH_PRODUCT_FAILURE = 'FETCH_PRODUCT_FAILURE'
 export const FETCH_PRODUCT_BEGIN = 'FETCH_PRODUCT_BEGIN'
@@ -26,20 +28,30 @@ export const fetchProductsByCategorySuccess = products => ({
   payload: { products },
 })
 
-export const saveToShoppingCartSuccess = (product, totalCartItems, cart) => ({
+export const saveToShoppingCartSuccess = (product, totalCartItems, cart, cartTotals) => ({
   type: SAVE_TO_SHOPPING_CART_SUCCESS,
   payload: { product },
   totalCartItems,
   cart,
+  cartTotals,
 })
 export const updateShoppingCartSuccess = upadtedShoppingCart => ({
   type: UPDATE_SHOPPING_CART_SUCCESS,
   payload: { upadtedShoppingCart },
 })
-export const deleteProductShoppingCartSuccess = (upadtedShoppingCart, totalCartItems) => ({
+export const updateShoppingCartTotalsSuccess = cartTotals => ({
+  type: UPDATE_SHOPPING_CART_TOTALS_SUCCESS,
+  payload: { cartTotals },
+})
+export const deleteProductShoppingCartSuccess = (
+  upadtedShoppingCart,
+  totalCartItems,
+  cartTotals
+) => ({
   type: DELETE_PRODUCT_SHOPPING_CART_SUCCESS,
   payload: { upadtedShoppingCart },
   totalCartItems,
+  cartTotals,
 })
 
 export const fetchProductsFailure = error => ({
@@ -112,7 +124,8 @@ export const saveToShoppingCart = id => {
         }
         saveToCart(product)
         const cart = loadLocalStorage('cart')
-        dispatch(saveToShoppingCartSuccess(product, totalCartItems, cart))
+        const cartTotals = updateCartTotals(cart) // Update the subtotal and total of the shopping cart
+        dispatch(saveToShoppingCartSuccess(product, totalCartItems, cart, cartTotals))
         return json
       })
       .catch(error => dispatch(fetchProductsFailure(error)))
@@ -129,9 +142,15 @@ export const updateShoppingCart = updatedProduct => {
 
 export const deleteProductInShoppingCart = productId => {
   const upadtedShoppingCart = modifyShoppingCartLocal(productId, 'DELETE')
-  const cartItems = updateShoppingCart.length
+  const cartItems = getTotalCartItems()
+  const cartTotals = updateCartTotals(upadtedShoppingCart) // Update the subtotal and total of the shopping cart
   return dispatch => {
-    return dispatch(deleteProductShoppingCartSuccess(upadtedShoppingCart, cartItems))
+    return dispatch(deleteProductShoppingCartSuccess(upadtedShoppingCart, cartItems, cartTotals))
+  }
+}
+export const updateShoppingCartTotals = shoppingCartTotals => {
+  return dispatch => {
+    return dispatch(updateShoppingCartTotalsSuccess(shoppingCartTotals))
   }
 }
 

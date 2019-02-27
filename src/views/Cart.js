@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import classNames from 'classnames'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import NumberFormat from 'react-number-format'
 
 import Menu from '../components/Menu'
 import Footer from '../components/Footer'
@@ -28,6 +29,16 @@ const styles = theme => ({
 })
 
 export class Cart extends Component {
+  constructor(props) {
+    super(props)
+    const cart = !this.props.shoppingCartTotals ? {} : this.props.shoppingCartTotals
+    this.state = {
+      subTotal: cart.subTotal,
+      total: cart.total,
+      shipping: cart.shipping,
+    }
+  }
+
   render() {
     const { classes, shoppingCart } = this.props
     return (
@@ -71,12 +82,68 @@ export class Cart extends Component {
               })
             )}
           </Grid>
-          <Style.UpdateBtn container>
-            <Grid item xs={12} sm={8} />
-            <Grid item xs={12} sm={4}>
-              <Button name="Update cart" />
+
+          <Style.CheckoutWrapper container>
+            <Grid item xs={12} sm={7} />
+            <Grid item xs={12} sm={5}>
+              <Style.AddInfo className="rubik">CART TOTALS</Style.AddInfo>
+              <Style.Divider />
+              <Style.Checkout>
+                <Style.CheckoutSection container>
+                  <Grid item xs={12} sm={6}>
+                    <p>Subtotal: </p>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <NumberFormat
+                      value={
+                        !this.props.shoppingCartTotals ? {} : this.props.shoppingCartTotals.subtotal
+                      }
+                      displayType={'text'}
+                      thousandSeparator={true}
+                      prefix={'$'}
+                    />
+                  </Grid>
+                </Style.CheckoutSection>
+                <Style.CheckoutSection container className="border-top-bottom">
+                  <Grid item xs={12} sm={6}>
+                    <p>Shipping: </p>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <p>
+                      FLAT RATE:{' '}
+                      <NumberFormat
+                        value={
+                          !this.props.shoppingCartTotals
+                            ? {}
+                            : this.props.shoppingCartTotals.shipping
+                        }
+                        displayType={'text'}
+                        thousandSeparator={true}
+                        prefix={'$'}
+                      />
+                    </p>
+                    <p>Estimate for</p>
+                  </Grid>
+                </Style.CheckoutSection>
+                <Style.CheckoutSection container>
+                  <Grid item xs={12} sm={6}>
+                    <p>Total: </p>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <NumberFormat
+                      value={
+                        !this.props.shoppingCartTotals ? {} : this.props.shoppingCartTotals.total
+                      }
+                      displayType={'text'}
+                      thousandSeparator={true}
+                      prefix={'$'}
+                    />
+                  </Grid>
+                </Style.CheckoutSection>
+              </Style.Checkout>
+              <Button name="Proceed to checkout" />
             </Grid>
-          </Style.UpdateBtn>
+          </Style.CheckoutWrapper>
         </main>
         <Footer />
       </div>
@@ -87,6 +154,7 @@ export class Cart extends Component {
 const mapStateToProps = state => {
   return {
     shoppingCart: state.product.shoppingCart,
+    shoppingCartTotals: state.product.shoppingCartTotals,
     loading: state.product.loading,
     error: state.product.error,
   }
@@ -105,11 +173,35 @@ Style.SubTitle = styled.h2`
 Style.SubTitleWrapper = styled.div`
   display: flex;
   width: 100%;
-  border-bottom: 1.2px solid rgb(138, 142, 157, 0.3);
+  border-bottom: 1px solid rgb(138, 142, 157, 0.2);
   @media (max-width: 960px) {
     display: none;
   }
 `
-Style.UpdateBtn = styled(Grid)`
+Style.Checkout = styled.div`
+  padding: 1.25rem;
+  background-color: ${colors.white};
+  box-shadow: 0 2px 6px 0 rgba(69, 73, 91, 0.08);
+  margin-bottom: 1rem;
+  color: ${colors.fontDark};
+`
+Style.CheckoutSection = styled(Grid)`
+  padding: 1.25rem 0;
+`
+
+Style.CheckoutWrapper = styled(Grid)`
   margin-top: 2rem;
+`
+Style.Divider = styled.div`
+  background-color: rgba(69, 73, 91, 0.08);
+  width: 100%;
+  border-radius: 4px;
+  height: 0.1rem;
+  margin-bottom: 1rem;
+`
+Style.AddInfo = styled.p`
+  line-height: 1.6875rem;
+  color: ${colors.black};
+  font-size: 1rem;
+  margin: 0.7rem 0;
 `

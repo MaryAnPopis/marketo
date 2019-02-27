@@ -27,6 +27,37 @@ export const loadLocalStorage = (key = 'state') => {
   }
 }
 
+export const updateCartTotals = shoppingCart => {
+  const myCurrentCart = shoppingCart
+  const cart = !myCurrentCart ? [] : myCurrentCart
+  let initialValue = 0
+  let subtotal = 0
+  let total = 0
+  let shipping = 0
+  subtotal = cart.reduce(function(total, currentValue) {
+    return total + currentValue.total
+  }, initialValue)
+
+  if (subtotal > 500) {
+    shipping = 70
+  }
+  if ((subtotal < 500) & (subtotal > 200)) {
+    shipping = 40
+  }
+  if ((subtotal < 200) & (subtotal > 61)) {
+    shipping = 20
+  }
+  if ((subtotal < 61) & (subtotal > 0)) {
+    shipping = 5
+  }
+
+  total = subtotal + shipping
+  const roundTotal = Math.round(total * 100) / 100
+  const shoppingCartTotals = { subtotal: subtotal, total: roundTotal, shipping: shipping }
+
+  return shoppingCartTotals
+}
+
 export const getShoppingCart = () => {
   let shoppingCart = []
   const key = 'cart'
