@@ -6,6 +6,7 @@ import {
   SAVE_TO_SHOPPING_CART_SUCCESS,
   FETCH_PRODUCT_BY_ID_BEGIN,
   UPDATE_SHOPPING_CART_SUCCESS,
+  DELETE_PRODUCT_SHOPPING_CART_SUCCESS,
 } from '../actions/productActions'
 
 import { getShoppingCart } from '../services'
@@ -90,10 +91,17 @@ export default function product(state = INITIAL_STATE, action) {
         cartItems: action.totalCartItems,
         shoppingCart: action.cart,
       }
+
     case UPDATE_SHOPPING_CART_SUCCESS:
       return {
         ...state,
         shoppingCart: action.payload.upadtedShoppingCart,
+      }
+    case DELETE_PRODUCT_SHOPPING_CART_SUCCESS:
+      return {
+        ...state,
+        shoppingCart: action.payload.upadtedShoppingCart,
+        cartItems: action.totalCartItems,
       }
 
     case FETCH_PRODUCT_FAILURE:

@@ -11,7 +11,7 @@ import DeleteIcon from '@material-ui/icons/DeleteOutlined'
 import Input from '../components/Input'
 import colors from '../style/colors'
 
-import { updateShoppingCart } from '../actions/productActions'
+import { updateShoppingCart, deleteProductInShoppingCart } from '../actions/productActions'
 
 class CartItem extends React.Component {
   constructor(props) {
@@ -24,7 +24,8 @@ class CartItem extends React.Component {
   }
 
   handleClick = () => {
-    console.log('DELTE ELEMENT')
+    const product = { id: this.props.id }
+    this.props.dispatch(deleteProductInShoppingCart(product))
   }
 
   updateTotal(e) {
