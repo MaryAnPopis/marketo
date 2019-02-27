@@ -23,6 +23,7 @@ const styles = theme => ({
       marginRight: 'auto',
     },
     marginTop: '3rem',
+    minHeight: '100vh',
   },
 })
 
@@ -62,8 +63,8 @@ export class Cart extends Component {
                     id={product.id}
                     src={product.image}
                     name={product.name}
-                    price={`$${product.price}`}
-                    total={`$${product.price}`}
+                    price={product.price}
+                    total={product.total}
                     quantity={product.quantity}
                   />
                 )
