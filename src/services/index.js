@@ -27,6 +27,23 @@ export const loadLocalStorage = (key = 'state') => {
   }
 }
 
+export const validateSession = () => {
+  const session = loadLocalStorage('user')
+  let validate = false
+
+  if (typeof session.isLogged == false) {
+    validate = false
+  } else {
+    if (session !== null) {
+      if (session.isLogged === true) {
+        validate = true
+      }
+    }
+  }
+
+  return validate
+}
+
 export const updateCartTotals = shoppingCart => {
   const myCurrentCart = shoppingCart
   const cart = !myCurrentCart ? [] : myCurrentCart

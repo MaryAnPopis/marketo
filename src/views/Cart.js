@@ -3,12 +3,15 @@ import classNames from 'classnames'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import NumberFormat from 'react-number-format'
+import { Redirect } from 'react-router-dom'
 
 import Menu from '../components/Menu'
 import Footer from '../components/Footer'
 import colors from '../style/colors'
 import CartItem from '../components/CartItem'
 import Button from '../components/Button'
+
+import { validateSession } from '../services'
 
 import Grid from '@material-ui/core/Grid'
 import { withStyles } from '@material-ui/core/styles'
@@ -36,11 +39,33 @@ export class Cart extends Component {
       subTotal: cart.subTotal,
       total: cart.total,
       shipping: cart.shipping,
+      redirect: false,
+    }
+  }
+
+  handleCheckout = () => {
+    debugger
+    if (!validateSession()) {
+      this.setState({
+        redirect: 'LOGIN',
+      })
+    } else {
+      this.setState({
+        redirect: 'CHECKOUT',
+      })
     }
   }
 
   render() {
     const { classes, shoppingCart } = this.props
+
+    if (this.state.redirect === 'LOGIN') {
+      return <Redirect to={`/login`} />
+    }
+    if (this.state.redirect === 'CHECKOUT') {
+      return <Redirect to={`/checkout`} />
+    }
+
     return (
       <div>
         <Menu />
@@ -141,7 +166,7 @@ export class Cart extends Component {
                   </Grid>
                 </Style.CheckoutSection>
               </Style.Checkout>
-              <Button name="Proceed to checkout" />
+              <Button name="Proceed to checkout" onClick={this.handleCheckout} />
             </Grid>
           </Style.CheckoutWrapper>
         </main>
