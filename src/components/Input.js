@@ -26,6 +26,7 @@ class Input extends React.Component {
         disabled={!props.isDisabled}
         borderState={props.borderState}
         className={props.className}
+        min={props.min}
       />
     )
   }
