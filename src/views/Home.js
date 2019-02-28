@@ -3,12 +3,15 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import { Carousel } from 'react-responsive-carousel'
 import styled from 'styled-components'
 import classNames from 'classnames'
+import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 
 import Menu from '../components/Menu'
 import Footer from '../components/Footer'
 import SliderCard from '../components/SliderCard'
 import CategoryCard from '../components/CategoryCard'
+
+import { fetchAllProducts } from '../actions/productActions.js'
 
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
@@ -18,26 +21,32 @@ const categories = [
   {
     id: 1,
     title: 'Camera & Photo',
+    image: 'https://i.imgur.com/3p97gS8.jpg',
   },
   {
     id: 2,
     title: 'Cell Phone',
+    image: 'https://i.imgur.com/hm8g1Q4.jpg',
   },
   {
     id: 3,
     title: 'Computer & Tablets',
+    image: 'https://i.imgur.com/EvaXfvs.jpg',
   },
   {
     id: 4,
-    title: 'TVs',
+    title: 'TV, Video, & Audio',
+    image: 'https://i.imgur.com/ZwDYj2u.jpg',
   },
   {
     id: 5,
     title: 'Video Games',
+    image: 'https://i.imgur.com/EkMhqg0.jpg',
   },
   {
     id: 6,
     title: 'Books',
+    image: 'https://i.imgur.com/WNs5bDX.png',
   },
 ]
 
@@ -58,8 +67,17 @@ const styles = theme => ({
 })
 
 export class Home extends Component {
+  componentDidMount() {
+    this.props.dispatch(fetchAllProducts(0, 8))
+    console.log(this.props.allProducts)
+  }
+
   render() {
-    const { classes } = this.props
+    const { classes, allProducts, error } = this.props
+
+    if (error) {
+      return <div>Error! {error.message}</div>
+    }
     return (
       <div>
         <Menu />
@@ -103,8 +121,9 @@ export class Home extends Component {
                 <Grid item spacing-xs-8 sm={6} md={4} lg={4} key={category.id}>
                   <CategoryCard
                     key={category.id}
+                    idCategory={category.id}
                     title={category.title}
-                    src="https://mk0conjrri8axjmrl.kinstacdn.com/wp-content/uploads/sites/2/2018/06/cameras-category-418x418.jpg"
+                    src={category.image}
                     atl={`${category.title} image`}
                     sizeWidth="7.75rem"
                     sizeHeight="7.75rem"
@@ -121,78 +140,26 @@ export class Home extends Component {
           </Typography>
           <div>
             <Grid container spacing={24} justify="center" alignItems="center">
-              <Grid item xs={12} sm={6} md={3}>
-                <ProductCard
-                  src="https://i.imgur.com/zMWz9Xa.jpg"
-                  alt="computer imgage"
-                  productName="HP 19' inches"
-                  price="$200"
-                  url="/"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <ProductCard
-                  src="https://i.imgur.com/zMWz9Xa.jpg"
-                  alt="computer imgage"
-                  productName="HP 19' inches"
-                  price="$200"
-                  url="/product/1"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <ProductCard
-                  src="https://i.imgur.com/zMWz9Xa.jpg"
-                  alt="computer imgage"
-                  productName="HP 19' inches"
-                  price="$200"
-                  url="/"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <ProductCard
-                  src="https://i.imgur.com/zMWz9Xa.jpg"
-                  alt="computer imgage"
-                  productName="HP 19' inches"
-                  price="$200"
-                  url="/"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <ProductCard
-                  src="https://i.imgur.com/zMWz9Xa.jpg"
-                  alt="computer imgage"
-                  productName="HP 19' inches"
-                  price="$200"
-                  url="/"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <ProductCard
-                  src="https://i.imgur.com/zMWz9Xa.jpg"
-                  alt="computer imgage"
-                  productName="HP 19' inches"
-                  price="$200"
-                  url="/"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <ProductCard
-                  src="https://i.imgur.com/zMWz9Xa.jpg"
-                  alt="computer imgage"
-                  productName="HP 19' inches"
-                  price="$200"
-                  url="/"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <ProductCard
-                  src="https://i.imgur.com/zMWz9Xa.jpg"
-                  alt="computer imgage"
-                  productName="HP 19' inches"
-                  price="$200"
-                  url="/"
-                />
-              </Grid>
+              {!allProducts ? (
+                <div />
+              ) : (
+                allProducts.map(product => {
+                  return (
+                    <Grid item xs={12} sm={6} md={3} key={product.id}>
+                      <ProductCard
+                        productId={product.id}
+                        src={product.image}
+                        sizeWidth="14.375rem"
+                        sizeHeight="14.375rem"
+                        alt={product.name}
+                        productName={product.name}
+                        price={product.price}
+                        url={`/product/${product.id}`}
+                      />
+                    </Grid>
+                  )
+                })
+              )}
             </Grid>
           </div>
         </div>
@@ -202,7 +169,15 @@ export class Home extends Component {
   }
 }
 
-export default withStyles(styles)(Home)
+const mapStateToProps = state => {
+  return {
+    allProducts: state.product.allProducts.content,
+    loading: state.product.loading,
+    error: state.product.error,
+  }
+}
+
+export default connect(mapStateToProps)(withStyles(styles)(Home))
 
 const Style = {}
 

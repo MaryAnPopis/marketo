@@ -19,6 +19,7 @@ export const FETCH_PRODUCT_BEGIN = 'FETCH_PRODUCT_BEGIN'
 export const FETCH_PRODUCT_BY_ID_BEGIN = 'FETCH_PRODUCT_BY_ID_BEGIN'
 export const CLEAN_SHOPPING_CART_BEGIN = 'CLEAN_SHOPPING_CART_BEGIN'
 export const REDIRECT_TO_SHOPPING_CART = 'REDIRECT_TO_SHOPPING_CART'
+export const FETCH_ALL_PRODUCTS = 'FETCH_ALL_PRODUCTS'
 
 export const fetchProductsSuccess = product => ({
   type: FETCH_PRODUCT_SUCCESS,
@@ -34,6 +35,10 @@ export const redirectToShoppingCart = () => ({
 
 export const fetchProductsByCategorySuccess = products => ({
   type: FETCH_PRODUCT_BY_CATEGORY_SUCCESS,
+  payload: { products },
+})
+export const fetchAllProductsSuccess = products => ({
+  type: FETCH_ALL_PRODUCTS,
   payload: { products },
 })
 
@@ -109,6 +114,20 @@ export const fetchProductByCategory = (id, page, size) => {
       .then(res => res.json())
       .then(json => {
         dispatch(fetchProductsByCategorySuccess(json))
+        return json
+      })
+      .catch(error => dispatch(fetchProductsFailure(error)))
+  }
+}
+
+export const fetchAllProducts = (page, size) => {
+  return dispatch => {
+    dispatch(fetchProductsBegin())
+    return fetch(`${API_URL}/products?page=${page}&size=${size}`)
+      .then(handleErrors)
+      .then(res => res.json())
+      .then(json => {
+        dispatch(fetchAllProductsSuccess(json))
         return json
       })
       .catch(error => dispatch(fetchProductsFailure(error)))

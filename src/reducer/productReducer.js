@@ -10,6 +10,7 @@ import {
   UPDATE_SHOPPING_CART_TOTALS_SUCCESS,
   CLEAN_SHOPPING_CART_BEGIN,
   REDIRECT_TO_SHOPPING_CART,
+  FETCH_ALL_PRODUCTS,
 } from '../actions/productActions'
 
 import { getShoppingCart } from '../services'
@@ -38,6 +39,7 @@ const INITIAL_STATE = {
     ],
   },
   products: [],
+  allProducts: [],
   product: {
     image: '',
     name: '',
@@ -85,6 +87,12 @@ export default function product(state = INITIAL_STATE, action) {
         ...state,
         loading: false,
         productDetails: action.payload.product,
+      }
+    case FETCH_ALL_PRODUCTS:
+      return {
+        ...state,
+        loading: false,
+        allProducts: action.payload.products,
       }
 
     case FETCH_PRODUCT_BY_CATEGORY_SUCCESS:
