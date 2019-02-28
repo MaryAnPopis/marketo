@@ -52,11 +52,11 @@ class CartItem extends React.Component {
     if (value > this.state.quantity) {
       quantityHelper = Number(this.state.quantity) + 1
       roundTotalPlusProduct = Math.round((Number(this.state.total) + price) * 100) / 100
-      shoppingCartTotals = this.shoppingCartTotals('SUM')
+      //shoppingCartTotals = this.shoppingCartTotals('SUM')
     } else {
       quantityHelper = Number(this.state.quantity) - 1
       roundTotalPlusProduct = Math.round((Number(this.state.total) - price) * 100) / 100
-      shoppingCartTotals = this.shoppingCartTotals('RES')
+      //  shoppingCartTotals = this.shoppingCartTotals('RES')
     }
     const updatedProduct = {
       id: id,
@@ -68,6 +68,7 @@ class CartItem extends React.Component {
     }
     this.props.dispatch(updateShoppingCart(updatedProduct))
 
+    shoppingCartTotals = updateCartTotals(this.props.shoppingCart)
     this.props.dispatch(updateShoppingCartTotalsSuccess(shoppingCartTotals))
   }
 
@@ -81,7 +82,7 @@ class CartItem extends React.Component {
     sum = cart.reduce(function(total, currentValue) {
       return total + currentValue.total
     }, initialValue)
-
+    debugger
     switch (type) {
       case 'SUM':
         subtotal = Math.round((sum + this.props.price) * 100) / 100
@@ -92,7 +93,7 @@ class CartItem extends React.Component {
       default:
         break
     }
-    
+
     const recalculate = updateCartTotals(myCurrentCart)
 
     const shoppingCartTotals = {
