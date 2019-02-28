@@ -2,10 +2,12 @@ import {
   FETCH_CATEGORIES_SUCCESS,
   FETCH_CATEGORIES_FAILURE,
   FETCH_CATEGORIES_BEGIN,
+  FETCH_SUBCATEGORIES_SUCCESS,
 } from '../actions/categoryActions'
 
 const INITIAL_STATE = {
   categories: [],
+  subCategories: [],
   loading: false,
   error: null,
 }
@@ -24,6 +26,13 @@ export default function product(state = INITIAL_STATE, action) {
         ...state,
         loading: false,
         categories: action.payload.categories,
+      }
+
+    case FETCH_SUBCATEGORIES_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        subCategories: action.payload.subCategories,
       }
 
     case FETCH_CATEGORIES_FAILURE:
