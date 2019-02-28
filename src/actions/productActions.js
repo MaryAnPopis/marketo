@@ -109,7 +109,7 @@ export const fetchProduct = id => {
 export const fetchProductByCategory = (id, page, size) => {
   return dispatch => {
     dispatch(fetchProductsBegin())
-    return fetch(`${API_URL}/products/category/${id}?page=${page}&size=${size}/`)
+    return fetch(`${API_URL}/products?page=${page}&size=${size}`)
       .then(handleErrors)
       .then(res => res.json())
       .then(json => {

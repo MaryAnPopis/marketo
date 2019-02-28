@@ -1,14 +1,19 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ReactPaginate from 'react-paginate'
+import styled from 'styled-components'
 
 import { fetchProductByCategory } from '../actions/productActions'
 
 import Menu from '../components/Menu'
+import Footer from '../components/Footer'
 import Loader from '../components/Loader'
 import ProductCard from '../components/ProductCard'
 
 import Grid from '@material-ui/core/Grid'
+import FordwardIcon from '../img/fordward.svg'
+import BackIcon from '../img/back.svg'
+
 import classNames from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
 
@@ -32,6 +37,7 @@ export class ProducList extends Component {
     this.state = {
       data: [],
       currentPage: this.props.productPage.number,
+      initialPage: 0,
     }
   }
   componentDidMount() {
@@ -55,9 +61,9 @@ export class ProducList extends Component {
       return <div>Error! {error.message}</div>
     }
 
-    if (loading) {
-      return <Loader />
-    }
+    // if (loading) {
+    //   return <Loader />
+    // }
 
     if (!productList) {
       return <Loader />
@@ -67,34 +73,42 @@ export class ProducList extends Component {
           <Menu />
           <div className={classNames(classes.layout)}>
             <Grid container spacing={24} justify="center" alignItems="center">
-              {productList.map(product => {
-                return (
-                  <Grid item xs={12} sm={6} md={3} key={product.id}>
-                    <ProductCard
-                      productId={product.id}
-                      src={product.image}
-                      sizeWidth="14.375rem"
-                      sizeHeight="14.375rem"
-                      alt={product.name}
-                      productName={product.name}
-                      price={product.price}
-                      url={`/product/${product.id}`}
-                    />
-                  </Grid>
-                )
-              })}
+              {loading ? (
+                <Loader />
+              ) : (
+                productList.map(product => {
+                  return (
+                    <Grid item xs={12} sm={6} md={3} key={product.id}>
+                      <ProductCard
+                        productId={product.id}
+                        src={product.image}
+                        sizeWidth="14.375rem"
+                        sizeHeight="14.375rem"
+                        alt={product.name}
+                        productName={product.name}
+                        price={product.price}
+                        url={`/product/${product.id}`}
+                      />
+                    </Grid>
+                  )
+                })
+              )}
             </Grid>
-
-            <ReactPaginate
-              previousLabel={'>'}
-              pageRangeDisplayed={2}
-              marginPagesDisplayed={1}
-              breakLabel="..."
-              nextLabel={'<'}
-              pageCount={productPage.totalPages}
-              onPageChange={this.handlePageChange}
-            />
+            <div className="paginate-controls">
+              <ReactPaginate
+                previousLabel={<img src={BackIcon} alt="back to previous page" />}
+                pageRangeDisplayed={2}
+                marginPagesDisplayed={1}
+                breakLabel="..."
+                nextLabel={<img src={FordwardIcon} alt="next page" />}
+                initialPage={0}
+                activeClassName="pagination-controls__item--activate"
+                pageCount={productPage.totalPages}
+                onPageChange={this.handlePageChange}
+              />
+            </div>
           </div>
+          <Footer />
         </div>
       )
     }
@@ -112,3 +126,5 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps)(withStyles(styles)(ProducList))
+
+const Style = {}
