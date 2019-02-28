@@ -7,7 +7,6 @@ import { withStyles } from '@material-ui/core/styles'
 import Menu from './Menu'
 import Footer from './Footer'
 import Button from './Button'
-import colors from '../style/colors'
 
 const styles = theme => ({
   layout: {
