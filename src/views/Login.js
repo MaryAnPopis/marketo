@@ -71,8 +71,10 @@ export class Login extends Component {
     this.setState({
       fetchInProgress: true,
     })
+    const emailUnder = this.state.email
+
     const data = {
-      email: this.state.email,
+      email: emailUnder.toLowerCase(),
       password: this.state.password,
     }
 
@@ -97,6 +99,9 @@ export class Login extends Component {
           toast.error('The email or password is invalid', {
             position: 'bottom-right',
             autoClose: 5000,
+          })
+          this.setState({
+            fetchInProgress: false,
           })
           console.log(err.status)
         })

@@ -5,10 +5,14 @@ import {
   FETCH_PRODUCT_BY_CATEGORY_SUCCESS,
   SAVE_TO_SHOPPING_CART_SUCCESS,
   FETCH_PRODUCT_BY_ID_BEGIN,
+  UPDATE_SHOPPING_CART_SUCCESS,
+  DELETE_PRODUCT_SHOPPING_CART_SUCCESS,
+  UPDATE_SHOPPING_CART_TOTALS_SUCCESS,
 } from '../actions/productActions'
 
 import { getShoppingCart } from '../services'
 const localShoppingCart = getShoppingCart()
+
 const INITIAL_STATE = {
   productDetails: {
     id: 0,
@@ -43,6 +47,7 @@ const INITIAL_STATE = {
   error: null,
   addToCartLoading: false,
   shoppingCart: localShoppingCart,
+  shoppingCartTotals: { subtotal: 0, total: 0, shipping: 0 },
   cartItems: 0,
 }
 
@@ -88,6 +93,25 @@ export default function product(state = INITIAL_STATE, action) {
         product: action.payload.product,
         cartItems: action.totalCartItems,
         shoppingCart: action.cart,
+        shoppingCartTotals: action.cartTotals,
+      }
+
+    case UPDATE_SHOPPING_CART_SUCCESS:
+      return {
+        ...state,
+        shoppingCart: action.payload.upadtedShoppingCart,
+      }
+    case UPDATE_SHOPPING_CART_TOTALS_SUCCESS:
+      return {
+        ...state,
+        shoppingCartTotals: action.payload.cartTotals,
+      }
+    case DELETE_PRODUCT_SHOPPING_CART_SUCCESS:
+      return {
+        ...state,
+        shoppingCart: action.payload.upadtedShoppingCart,
+        cartItems: action.totalCartItems,
+        shoppingCartTotals: action.cartTotals,
       }
 
     case FETCH_PRODUCT_FAILURE:

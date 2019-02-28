@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 import { Carousel } from 'react-responsive-carousel'
+import NumberFormat from 'react-number-format'
 
 import Button from '../components/Button'
 import Menu from '../components/Menu'
@@ -100,7 +101,14 @@ class ProductDetails extends React.Component {
                   </div>
 
                   <Style.PriceWrapper>
-                    <Style.Price>${productDetails.price}</Style.Price>
+                    <Style.Price>
+                      <NumberFormat
+                        value={productDetails.price}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                        prefix={'$'}
+                      />
+                    </Style.Price>
                   </Style.PriceWrapper>
                   <Style.Divider />
                   <Style.AddInfo>{productDetails.additionalInfo}</Style.AddInfo>

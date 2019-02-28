@@ -26,6 +26,7 @@ class Input extends React.Component {
         disabled={!props.isDisabled}
         borderState={props.borderState}
         className={props.className}
+        min={props.min}
       />
     )
   }
@@ -45,7 +46,7 @@ Input.propTypes = {
 Input.defaultProps = {
   isDisabled: true, // true make the input not disabled
   borderState: {
-    border: `solid 1px ${colors.lightGrey}`,
+    border: `solid 1px #DDDFE7`,
   },
 }
 

@@ -27,6 +27,54 @@ export const loadLocalStorage = (key = 'state') => {
   }
 }
 
+export const validateSession = () => {
+  const session = loadLocalStorage('user')
+  let validate = false
+
+  if (typeof session.isLogged == false) {
+    validate = false
+  } else {
+    if (session !== null) {
+      if (session.isLogged === true) {
+        validate = true
+      }
+    }
+  }
+
+  return validate
+}
+
+export const updateCartTotals = shoppingCart => {
+  const myCurrentCart = shoppingCart
+  const cart = !myCurrentCart ? [] : myCurrentCart
+  let initialValue = 0
+  let subtotal = 0
+  let total = 0
+  let shipping = 0
+  subtotal = cart.reduce(function(total, currentValue) {
+    return total + currentValue.total
+  }, initialValue)
+
+  if (subtotal > 500) {
+    shipping = 70
+  }
+  if ((subtotal < 500) & (subtotal > 200)) {
+    shipping = 40
+  }
+  if ((subtotal < 200) & (subtotal > 61)) {
+    shipping = 20
+  }
+  if ((subtotal < 61) & (subtotal > 0)) {
+    shipping = 5
+  }
+
+  total = subtotal + shipping
+  const roundTotal = Math.round(total * 100) / 100
+  const shoppingCartTotals = { subtotal: subtotal, total: roundTotal, shipping: shipping }
+
+  return shoppingCartTotals
+}
+
 export const getShoppingCart = () => {
   let shoppingCart = []
   const key = 'cart'
@@ -59,6 +107,33 @@ export const saveToCart = product => {
   } catch (err) {
     console.error('save state error on local storage', err)
   }
+}
+
+export const modifyShoppingCartLocal = (updatedProduct, type) => {
+  const key = 'cart'
+  let updatedShoppingCart = JSON.parse(localStorage.getItem(key))
+  try {
+    let getCart = JSON.parse(localStorage.getItem(key))
+    let foundProduct = getCart.find(item => item.id === updatedProduct.id)
+    let index = getCart.indexOf(foundProduct)
+    switch (type) {
+      case 'DELETE':
+        getCart.splice(index, 1)
+        break
+      case 'UPDATE':
+        getCart[index] = updatedProduct
+        break
+      default:
+        getCart = updatedShoppingCart
+        break
+    }
+    localStorage.setItem(key, JSON.stringify(getCart))
+    updatedShoppingCart = JSON.parse(localStorage.getItem(key))
+  } catch (err) {
+    console.error('modify cart locally', err)
+  }
+
+  return updatedShoppingCart
 }
 
 export const getTotalCartItems = () => {
