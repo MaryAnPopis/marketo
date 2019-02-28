@@ -69,8 +69,13 @@ export const updateCartTotals = shoppingCart => {
   }
 
   total = subtotal + shipping
+
   const roundTotal = Math.round(total * 100) / 100
-  const shoppingCartTotals = { subtotal: subtotal, total: roundTotal, shipping: shipping }
+  const shoppingCartTotals = {
+    subtotal: Math.round(subtotal * 100) / 100,
+    total: roundTotal,
+    shipping: shipping,
+  }
 
   return shoppingCartTotals
 }
