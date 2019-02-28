@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { Link, withRouter } from 'react-router-dom'
+import { Link, withRouter, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import colors from '../style/colors'
 import logo from '../img/logo.svg'
 import Input from '../components/Input'
-import { loadLocalStorage } from '../services'
+import { loadLocalStorage, logOut } from '../services'
 
 import Popover from '@material-ui/core/Popover'
 import IconButton from '@material-ui/core/IconButton'
@@ -15,6 +15,8 @@ import Badge from '@material-ui/core/Badge'
 import { withStyles } from '@material-ui/core/styles'
 import classNames from 'classnames'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+
 import Grid from '@material-ui/core/Grid'
 
 import { fetchCategories } from '../actions/categoryActions'
@@ -73,10 +75,19 @@ const validateProfile = () => {
 export class Menu extends Component {
   state = {
     anchorEl: null,
+    isLogged: false,
+    redirect: false,
   }
 
   componentDidMount() {
     this.props.dispatch(fetchCategories())
+  }
+
+  handleLogOut() {
+    logOut()
+    this.setState({
+      redirect: true,
+    })
   }
 
   handlePopoverOpen = event => {
@@ -93,6 +104,10 @@ export class Menu extends Component {
     const { classes, categories, cartItems } = this.props
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
+
+    if (this.state.redirect) {
+      return <Redirect to="/" />
+    }
 
     return (
       <div>
@@ -129,6 +144,14 @@ export class Menu extends Component {
                     <ShoppingCartIcon />
                   </Badge>
                 </IconButton>
+                <div />
+                {loadLocalStorage('user').isLogged ? (
+                  <IconButton onClick={() => this.handleLogOut()}>
+                    <ExitToAppIcon />
+                  </IconButton>
+                ) : (
+                  <div />
+                )}
                 <Popover
                   id="mouse-over-popover"
                   className={classes.popover}

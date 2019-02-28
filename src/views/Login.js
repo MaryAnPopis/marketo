@@ -14,6 +14,7 @@ import Button from '../components/Button'
 import { emailRegex, formValid } from '../utils/formVerification'
 import { post, saveLocalStorage } from '../services'
 
+import BtnLoader from '../img/loader-shopping_cart.svg'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
@@ -90,6 +91,9 @@ export class Login extends Component {
               position: 'bottom-right',
               autoClose: 5000,
             })
+            this.setState({
+              fetchInProgress: false,
+            })
           } else {
             saveLocalStorage({ data, isLogged: true }, 'user') // Save the token to local storage
             this.setState({ redirect: true })
@@ -119,13 +123,12 @@ export class Login extends Component {
 
   render() {
     const { classes, redirectShoppingCart } = this.props
+
+    if (this.state.redirect) {
+      return <Redirect to={redirectShoppingCart ? '/cart' : `/profile`} />
+    }
     return (
       <main>
-        {this.state.redirect ? (
-          <Redirect to={redirectShoppingCart ? '/cart' : `/profile`} />
-        ) : (
-          this.state.fetchInProgress && <Loader />
-        )}
         <Menu />
         <ToastContainer />
         <Grid container className={classes.main}>
@@ -170,7 +173,10 @@ export class Login extends Component {
                   <small className="form-text text-danger ">{this.state.formErrors.password}</small>
                 )}
               </div>
-              <Button name="Log in" size="100%" />
+              <Button
+                name={this.state.fetchInProgress ? <img src={BtnLoader} alt="loading" /> : 'Log in'}
+                size="100%"
+              />
             </form>
           </Style.Main>
         </Grid>
