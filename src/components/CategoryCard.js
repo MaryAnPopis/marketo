@@ -2,33 +2,29 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 
 import Img from './Img'
 import colors from '../style/colors'
 
-const CategoryCard = props => {
-  return (
-    <Style.CardWrapper>
-      <Style.Thumnail>
-        <Img
-          src={props.src}
-          atl={props.alt}
-          sizeWidth={props.sizeWidth}
-          sizeHeight={props.sizeHeight}
-        />
-      </Style.Thumnail>
-      <div>
-        <Style.Title>
-          <Link to={props.categoryUrl}>{props.title}</Link>
-        </Style.Title>
-        <ul>
-          <li>
-            <Link to="/"> > Digital Cameras</Link>
-          </li>
-        </ul>
-      </div>
-    </Style.CardWrapper>
-  )
+class CategoryCard extends React.Component {
+  render() {
+    const { src, alt, sizeHeight, sizeWidth, categoryUrl, title, idCategory } = this.props
+    return (
+      <Style.CardWrapper idCategory={idCategory}>
+        <Style.Thumnail>
+          <Link to={categoryUrl}>
+            <Img src={src} atl={alt} sizeWidth={sizeWidth} sizeHeight={sizeHeight} />
+          </Link>
+        </Style.Thumnail>
+        <div>
+          <Style.Title>
+            <Link to={categoryUrl}>{title}</Link>
+          </Style.Title>
+        </div>
+      </Style.CardWrapper>
+    )
+  }
 }
 
 CategoryCard.propTypes = {
@@ -40,7 +36,13 @@ CategoryCard.propTypes = {
   title: PropTypes.string,
 }
 
-export default CategoryCard
+const mapStateToProps = state => {
+  return {
+    subCategories: state.categories.subCategories,
+  }
+}
+
+export default connect(mapStateToProps)(CategoryCard)
 
 const Style = {}
 

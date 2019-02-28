@@ -12,6 +12,7 @@ import CartItem from '../components/CartItem'
 import Button from '../components/Button'
 
 import { validateSession } from '../services'
+import { redirectToShoppingCart } from '../actions/productActions'
 
 import Grid from '@material-ui/core/Grid'
 import { withStyles } from '@material-ui/core/styles'
@@ -44,8 +45,8 @@ export class Cart extends Component {
   }
 
   handleCheckout = () => {
-    debugger
     if (!validateSession()) {
+      this.props.dispatch(redirectToShoppingCart())
       this.setState({
         redirect: 'LOGIN',
       })
@@ -147,7 +148,7 @@ export class Cart extends Component {
                         prefix={'$'}
                       />
                     </p>
-                    <p>Estimate for</p>
+                    {/* { <p>Estimate for</p>} */}
                   </Grid>
                 </Style.CheckoutSection>
                 <Style.CheckoutSection container>

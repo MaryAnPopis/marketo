@@ -69,8 +69,13 @@ export const updateCartTotals = shoppingCart => {
   }
 
   total = subtotal + shipping
+
   const roundTotal = Math.round(total * 100) / 100
-  const shoppingCartTotals = { subtotal: subtotal, total: roundTotal, shipping: shipping }
+  const shoppingCartTotals = {
+    subtotal: Math.round(subtotal * 100) / 100,
+    total: roundTotal,
+    shipping: shipping,
+  }
 
   return shoppingCartTotals
 }
@@ -89,6 +94,15 @@ export const getShoppingCart = () => {
     console.log(err)
   }
   return shoppingCart
+}
+
+export const cleanShoppingCartLocal = shoppinCart => {
+  const key = 'cart'
+  localStorage.setItem(key, JSON.stringify(shoppinCart))
+}
+export const logOut = () => {
+  const key = 'user'
+  localStorage.setItem(key, JSON.stringify({ isLogged: false }))
 }
 
 export const saveToCart = product => {
@@ -172,6 +186,25 @@ export const post = (path, data) => {
 }
 export const getByParam = (path, param) => {
   return fetch(`${API_URL}/${path}/${param}`)
+    .then(res => {
+      return res.json()
+    })
+    .then(data => {
+      return data
+    })
+    .catch(err => {
+      throw err
+    })
+}
+export const put = (path, data, token) => {
+  return fetch(`${API_URL}/${path}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+    headers: {
+      token: token,
+      'Content-Type': 'application/json',
+    },
+  })
     .then(res => {
       return res.json()
     })

@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { Link, withRouter } from 'react-router-dom'
+import { Link, withRouter, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
+import MediaQuery from 'react-responsive'
 
 import colors from '../style/colors'
 import logo from '../img/logo.svg'
 import Input from '../components/Input'
-import { loadLocalStorage } from '../services'
+import { loadLocalStorage, logOut } from '../services'
 
 import Popover from '@material-ui/core/Popover'
 import IconButton from '@material-ui/core/IconButton'
@@ -15,9 +16,12 @@ import Badge from '@material-ui/core/Badge'
 import { withStyles } from '@material-ui/core/styles'
 import classNames from 'classnames'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+
 import Grid from '@material-ui/core/Grid'
 
 import { fetchCategories } from '../actions/categoryActions'
+import CustomeDrawer from '../components/Drawer'
 
 const styles = theme => ({
   badge: {
@@ -73,10 +77,19 @@ const validateProfile = () => {
 export class Menu extends Component {
   state = {
     anchorEl: null,
+    isLogged: false,
+    redirect: false,
   }
 
   componentDidMount() {
     this.props.dispatch(fetchCategories())
+  }
+
+  handleLogOut() {
+    logOut()
+    this.setState({
+      redirect: true,
+    })
   }
 
   handlePopoverOpen = event => {
@@ -94,6 +107,10 @@ export class Menu extends Component {
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
 
+    if (this.state.redirect) {
+      return <Redirect to="/" />
+    }
+    let width = window.innerWidth
     return (
       <div>
         <Style.Container_User>
@@ -106,11 +123,16 @@ export class Menu extends Component {
           <Style.Container className={classNames(classes.layout)}>
             <Grid container className={classes.centerElements}>
               <Grid item xs={12} sm>
-                <Link to="/">
-                  <Style.ContainerMenuLogo>
-                    <Style.Img src={logo} alt="company logo" />
-                  </Style.ContainerMenuLogo>
-                </Link>
+                <MediaQuery query="(max-width: 800px)">
+                  <CustomeDrawer />
+                </MediaQuery>
+                <MediaQuery query="(min-width: 801px)">
+                  <Link to="/">
+                    <Style.ContainerMenuLogo>
+                      <Style.Img src={logo} alt="company logo" />
+                    </Style.ContainerMenuLogo>
+                  </Link>
+                </MediaQuery>
               </Grid>
               <Grid item xs={11} sm={6}>
                 <Input type="text" name="search" placeholder="Search products..." />
@@ -129,6 +151,14 @@ export class Menu extends Component {
                     <ShoppingCartIcon />
                   </Badge>
                 </IconButton>
+                <div />
+                {loadLocalStorage('user').isLogged ? (
+                  <IconButton onClick={() => this.handleLogOut()}>
+                    <ExitToAppIcon />
+                  </IconButton>
+                ) : (
+                  <div />
+                )}
                 <Popover
                   id="mouse-over-popover"
                   className={classes.popover}
@@ -152,19 +182,21 @@ export class Menu extends Component {
                 </Popover>
               </Grid>
             </Grid>
-            <div className={classes.linkMenus}>
-              <Grid container>
-                {categories.map(category => {
-                  return (
-                    <Grid xs={12} item sm key={category.id}>
-                      <a key={category.id} href={`/category/${category.id}`}>
-                        {category.name}
-                      </a>
-                    </Grid>
-                  )
-                })}
-              </Grid>
-            </div>
+            <MediaQuery query="(min-width: 800px)">
+              <div className={classes.linkMenus}>
+                <Grid container>
+                  {categories.map(category => {
+                    return (
+                      <Grid xs={12} item sm key={category.id}>
+                        <a key={category.id} href={`/category/${category.id}`}>
+                          {category.name}
+                        </a>
+                      </Grid>
+                    )
+                  })}
+                </Grid>
+              </div>
+            </MediaQuery>
           </Style.Container>
         </Style.ContainerMenu>
       </div>

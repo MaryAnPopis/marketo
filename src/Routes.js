@@ -9,6 +9,8 @@ import Profile from './views/Profile'
 import ProductDetails from './views/ProductDetails'
 import ProductList from './views/ProducList'
 import Cart from './views/Cart'
+import Checkout from './views/Checkout'
+import CheckoutSuccess from './components/CheckoutSuccess'
 import Error404 from './components/Error404'
 
 const Routes = () => (
@@ -21,6 +23,8 @@ const Routes = () => (
       <Route exact path="/category/:idCategory" component={ProductList} />
       <Route exact path="/cart" component={Cart} />
       <PrivateRoute exact path="/profile" component={Profile} />
+      <PrivateRoute exact path="/checkout" component={Checkout} />
+      <PrivateRoute exact path="/checkout-success" component={CheckoutSuccess} />
       <Route component={Error404} />
     </Switch>
   </main>

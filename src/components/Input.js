@@ -64,6 +64,7 @@ const InputComponent = styled.input`
   border: ${props => props.borderState.border};
   outline: transparent;
   text-align: 'left';
+  margin-top: 0.4rem;
   box-shadow: 0 2px 1px 0 rgba(0, 0, 0, 0.03);
   &:focus {
     border: solid 1px ${colors.fontLight};

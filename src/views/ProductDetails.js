@@ -5,6 +5,9 @@ import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 import { Carousel } from 'react-responsive-carousel'
 import NumberFormat from 'react-number-format'
+import { ToastContainer, toast } from 'react-toastify'
+import { css } from 'glamor'
+import { Redirect } from 'react-router-dom'
 
 import Button from '../components/Button'
 import Menu from '../components/Menu'
@@ -13,9 +16,10 @@ import Footer from '../components/Footer'
 import ProductCard from '../components/ProductCard'
 import Loader from '../components/Loader'
 
+import CheckCircleOutlinedIcon from '@material-ui/icons/CheckCircleOutlined'
 import Grid from '@material-ui/core/Grid'
 
-import { fetchProduct } from '../actions/productActions'
+import { fetchProduct, saveToShoppingCart } from '../actions/productActions'
 
 const styles = theme => ({
   productTitle: {
@@ -34,14 +38,55 @@ const styles = theme => ({
 })
 
 class ProductDetails extends React.Component {
+  constructor(props) {
+    super(props)
+
+    const cartFromProps = !this.props.shoppingCart ? [] : this.props.shoppingCart
+
+    this.state = {
+      shoppingCart: cartFromProps,
+      redirect: false,
+      isInShoppingCart: false,
+    }
+  }
+
   componentDidMount() {
     const idProduct = this.props.match.params.idProduct
     this.props.dispatch(fetchProduct(idProduct))
+
+    const isFound = this.state.shoppingCart.some(item => {
+      return item.id === Number(idProduct)
+    })
+    this.setState({
+      isInShoppingCart: isFound,
+    })
+  }
+
+  addToShoppingCart(productId) {
+    this.props.dispatch(saveToShoppingCart(productId))
+    toast.success(`Product successfully added to your cart!  `, {
+      className: css({
+        background: '#29D094 !important',
+      }),
+      position: 'top-right',
+      autoClose: 3000,
+    })
+
+    // Change the icon to Check
+    this.setState({
+      isInShoppingCart: true,
+    })
+  }
+
+  goToCart() {
+    this.setState({
+      redirect: true,
+    })
   }
 
   render() {
     const { classes, productDetails, error, loading, relatedProducts } = this.props
-
+    const { isInShoppingCart } = this.state
     if (error) {
       return <div>Error! {error.message}</div>
     }
@@ -50,12 +95,17 @@ class ProductDetails extends React.Component {
       return <Loader />
     }
 
+    if (this.state.redirect) {
+      return <Redirect to="/cart" />
+    }
+
     if (!productDetails) {
       return <div />
     } else {
       return (
         <div>
           <Menu />
+          {this.props.addToCartLoading && <ToastContainer />}
           <main className={classNames(classes.layout)}>
             <Grid container spacing={24}>
               <Grid item xs={12} sm={6} md={7}>
@@ -92,9 +142,9 @@ class ProductDetails extends React.Component {
                         )
                       })}
                     </Style.Tags>
-                    <Style.Tags>
+                    {/* {  <Style.Tags>
                       Tags: <Style.TagsDescription>HDMI, LED</Style.TagsDescription>
-                    </Style.Tags>
+                    </Style.Tags>} */}
                     <Style.Tags>
                       Brand: <Style.TagsDescription>{productDetails.brand}</Style.TagsDescription>
                     </Style.Tags>
@@ -118,7 +168,17 @@ class ProductDetails extends React.Component {
                     })}
                   </dl>
                   <Style.Divider className="mb-2" />
-                  <Button name="Add To Cart" />
+                  {isInShoppingCart ? (
+                    <Button
+                      name={<CheckCircleOutlinedIcon className={classes.icon} />}
+                      onClick={() => this.goToCart(productDetails.id)}
+                    />
+                  ) : (
+                    <Button
+                      onClick={() => this.addToShoppingCart(productDetails.id)}
+                      name={'Add To Cart'}
+                    />
+                  )}
                 </Style.Card>
               </Grid>
               <Grid item xs={12} sm={12} lg={12}>
@@ -131,15 +191,18 @@ class ProductDetails extends React.Component {
             <Style.AddInfo className="rubik">RELATED PRODUCTS</Style.AddInfo>
             <Style.Divider />
             <Grid container spacing={24} justify="center" alignItems="center">
-              {relatedProducts.map(relatedProduct => {
+              {relatedProducts.map(product => {
                 return (
-                  <Grid item xs={12} sm={6} md={3} key={relatedProduct.id}>
+                  <Grid item xs={12} sm={6} md={3} key={product.id}>
                     <ProductCard
-                      src={relatedProduct.image}
-                      alt={relatedProduct.name}
-                      productName={relatedProduct.name}
-                      price={relatedProduct.price}
-                      url={`/product/${relatedProduct.id}`}
+                      productId={product.id}
+                      src={product.image}
+                      sizeWidth="14.375rem"
+                      sizeHeight="14.375rem"
+                      alt={product.name}
+                      productName={product.name}
+                      price={product.price}
+                      url={`/product/${product.id}`}
                     />
                   </Grid>
                 )
@@ -156,6 +219,8 @@ const mapStateToProps = state => {
   return {
     productDetails: state.product.productDetails.product,
     relatedProducts: state.product.products.content,
+    addToCartLoading: state.product.addToCartLoading,
+    shoppingCart: state.product.shoppingCart,
     loading: state.product.loading,
     error: state.product.error,
   }
