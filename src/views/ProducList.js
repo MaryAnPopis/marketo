@@ -24,7 +24,7 @@ const styles = theme => ({
     },
   },
 })
-const MAX_PRODUCTS = 2
+const MAX_PRODUCTS = 8
 export class ProducList extends Component {
   constructor(props) {
     super(props)
