@@ -8,6 +8,8 @@ import {
   UPDATE_SHOPPING_CART_SUCCESS,
   DELETE_PRODUCT_SHOPPING_CART_SUCCESS,
   UPDATE_SHOPPING_CART_TOTALS_SUCCESS,
+  CLEAN_SHOPPING_CART_BEGIN,
+  REDIRECT_TO_SHOPPING_CART,
 } from '../actions/productActions'
 
 import { getShoppingCart } from '../services'
@@ -44,11 +46,13 @@ const INITIAL_STATE = {
     total: 0,
   },
   loading: false,
+  loadingPayment: false,
   error: null,
   addToCartLoading: false,
   shoppingCart: localShoppingCart,
   shoppingCartTotals: { subtotal: 0, total: 0, shipping: 0 },
   cartItems: 0,
+  redirectShoppingCart: false,
 }
 
 export default function product(state = INITIAL_STATE, action) {
@@ -59,6 +63,12 @@ export default function product(state = INITIAL_STATE, action) {
       return {
         ...state,
         loading: true,
+        error: null,
+      }
+    case REDIRECT_TO_SHOPPING_CART:
+      return {
+        ...state,
+        redirectShoppingCart: true,
         error: null,
       }
     case FETCH_PRODUCT_BY_ID_BEGIN:
@@ -100,6 +110,13 @@ export default function product(state = INITIAL_STATE, action) {
       return {
         ...state,
         shoppingCart: action.payload.upadtedShoppingCart,
+      }
+    case CLEAN_SHOPPING_CART_BEGIN:
+      return {
+        ...state,
+        shoppingCart: action.payload.shoppingCart,
+        cartItems: 0,
+        shoppingCartTotals: { subtotal: 0, total: 0, shipping: 0 },
       }
     case UPDATE_SHOPPING_CART_TOTALS_SUCCESS:
       return {

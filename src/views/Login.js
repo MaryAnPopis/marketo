@@ -3,6 +3,7 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import styled from 'styled-components'
 import { Link, Redirect } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
+import { connect } from 'react-redux'
 
 import colors from '../style/colors'
 import Label from '../components/Label'
@@ -117,11 +118,11 @@ export class Login extends Component {
   }
 
   render() {
-    const { classes } = this.props
+    const { classes, redirectShoppingCart } = this.props
     return (
       <main>
         {this.state.redirect ? (
-          <Redirect to={`/profile`} />
+          <Redirect to={redirectShoppingCart ? '/cart' : `/profile`} />
         ) : (
           this.state.fetchInProgress && <Loader />
         )}
@@ -178,7 +179,13 @@ export class Login extends Component {
   }
 }
 
-export default withStyles(styles)(Login)
+const mapStateToProps = state => {
+  return {
+    redirectShoppingCart: state.product.redirectShoppingCart,
+  }
+}
+
+export default connect(mapStateToProps)(withStyles(styles)(Login))
 
 const Style = {}
 

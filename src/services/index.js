@@ -91,6 +91,11 @@ export const getShoppingCart = () => {
   return shoppingCart
 }
 
+export const cleanShoppingCartLocal = shoppinCart => {
+  const key = 'cart'
+  localStorage.setItem(key, JSON.stringify(shoppinCart))
+}
+
 export const saveToCart = product => {
   const key = 'cart'
 

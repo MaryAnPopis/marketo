@@ -86,11 +86,11 @@ export class ProducList extends Component {
             </Grid>
 
             <ReactPaginate
-              previousLabel={<li>porfa</li>}
+              previousLabel={'>'}
               pageRangeDisplayed={2}
               marginPagesDisplayed={1}
               breakLabel="..."
-              nextLabel={<li>porfa</li>}
+              nextLabel={'<'}
               pageCount={productPage.totalPages}
               onPageChange={this.handlePageChange}
             />

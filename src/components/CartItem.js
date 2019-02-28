@@ -92,7 +92,7 @@ class CartItem extends React.Component {
       default:
         break
     }
-
+    
     const recalculate = updateCartTotals(myCurrentCart)
 
     const shoppingCartTotals = {

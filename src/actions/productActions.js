@@ -17,10 +17,19 @@ export const DELETE_PRODUCT_SHOPPING_CART_SUCCESS = 'DELETE_PRODUCT_SHOPPING_CAR
 export const FETCH_PRODUCT_FAILURE = 'FETCH_PRODUCT_FAILURE'
 export const FETCH_PRODUCT_BEGIN = 'FETCH_PRODUCT_BEGIN'
 export const FETCH_PRODUCT_BY_ID_BEGIN = 'FETCH_PRODUCT_BY_ID_BEGIN'
+export const CLEAN_SHOPPING_CART_BEGIN = 'CLEAN_SHOPPING_CART_BEGIN'
+export const REDIRECT_TO_SHOPPING_CART = 'REDIRECT_TO_SHOPPING_CART'
 
 export const fetchProductsSuccess = product => ({
   type: FETCH_PRODUCT_SUCCESS,
   payload: { product },
+})
+export const cleanShoppingCart = shoppingCart => ({
+  type: CLEAN_SHOPPING_CART_BEGIN,
+  payload: { shoppingCart },
+})
+export const redirectToShoppingCart = () => ({
+  type: REDIRECT_TO_SHOPPING_CART,
 })
 
 export const fetchProductsByCategorySuccess = products => ({

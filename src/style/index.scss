@@ -7,7 +7,7 @@ $lightGrey:#EEEFF3;
 $lightFont : #75758B;
 $danger: #e74c3c;
 $success: #29D094;
-
+$greyFont: #6b6f81;
 html,
 body,
 ul,
@@ -52,6 +52,10 @@ li {
 
 p{
   margin:0;
+}
+
+input{
+  font-family: 'Montserrat', sans-serif;
 }
 
 .link-primary{
@@ -121,4 +125,15 @@ p{
 .border-top-bottom{
   border-bottom: 1px solid rgba(138, 142, 157, 0.2);
   border-top: 1px solid rgba(138, 142, 157, 0.2);
+}
+.remove-border{
+  border-bottom: 1px solid #FCFCFC;
+}
+
+.greyColor{
+  color: $greyFont
+}
+
+.boldy{
+  font-weight: 500;
 }

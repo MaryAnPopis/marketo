@@ -19,7 +19,6 @@ Button.propTypes = {
   id: PropTypes.string,
   className: PropTypes.string,
   size: PropTypes.string,
-  name: PropTypes.string,
   onClick: PropTypes.func,
 }
 

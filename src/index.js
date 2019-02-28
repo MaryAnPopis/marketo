@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import configureStore from './configureStore'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import { StripeProvider } from 'react-stripe-elements'
 
 import './style/index.scss'
 import 'react-toastify/dist/ReactToastify.css'
@@ -32,7 +33,9 @@ ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
       <MuiThemeProvider theme={theme}>
-        <App />
+        <StripeProvider apiKey="pk_test_5j4Xji3WgvvmCij2LfnQQdle">
+          <App />
+        </StripeProvider>
       </MuiThemeProvider>
     </Provider>
   </BrowserRouter>,
