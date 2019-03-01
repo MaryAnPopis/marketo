@@ -137,3 +137,31 @@ input{
 .boldy{
   font-weight: 500;
 }
+
+.paginate-controls ul{
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+
+}
+
+.paginate-controls li{
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin: 0.3rem;
+  padding:0.3rem 1rem;
+  // border: 2px solid #DDDFE7;
+}
+
+.paginate-controls li:hover{
+  color:$primaryColor;
+  // border: 2px solid #DDDFE7;
+}
+
+.pagination-controls__item--activate{
+  border: 2px solid $primaryColor;
+  padding:0.2rem 0.6rem;
+  color:$primaryColor;
+  font-weight: 500;
+  color: $primaryColor;
+}

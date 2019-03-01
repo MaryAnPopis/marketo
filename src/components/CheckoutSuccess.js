@@ -46,6 +46,7 @@ export class CheckoutSuccess extends Component {
         <main className={classNames(classes.layout)}>
           <Style.Form>
             <Style.Title className="rubik">Thank you. Your order has been received.</Style.Title>
+
             <Button name="Return to shop" onClick={e => this.handleClick(e)} />
           </Style.Form>
         </main>

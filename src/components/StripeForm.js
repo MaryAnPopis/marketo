@@ -5,13 +5,19 @@ import jwtDecode from 'jwt-decode'
 import { ToastContainer, toast } from 'react-toastify'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-
+import uniqid from 'uniqid'
 import colors from '../style/colors'
 import Button from '../components/Button'
 import Label from '../components/Label'
 import ShoppingCartLoader from '../img/loader-shopping_cart.svg'
 
-import { loadLocalStorage, post, cleanShoppingCartLocal } from '../services'
+import {
+  loadLocalStorage,
+  post,
+  cleanShoppingCartLocal,
+  saveOrder,
+  getShoppingCart,
+} from '../services'
 import { cleanShoppingCart } from '../actions/productActions'
 
 export class StripeForm extends Component {
@@ -42,6 +48,15 @@ export class StripeForm extends Component {
           loading: true,
         })
         post('products/checkout-stripe', stripePay).then(payment => {
+          const order = {
+            id: uniqid(),
+            name: name,
+            email: email,
+            total: total,
+            receipt: payment.receipt,
+          }
+
+          saveOrder(order)
           if (payment.paid) {
             cleanShoppingCartLocal([])
             this.props.dispatch(cleanShoppingCart([]))

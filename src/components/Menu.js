@@ -6,12 +6,10 @@ import MediaQuery from 'react-responsive'
 
 import colors from '../style/colors'
 import logo from '../img/logo.svg'
-import Input from '../components/Input'
+import AutoComplete from './AutoComplete'
 import { loadLocalStorage, logOut } from '../services'
 
-import Popover from '@material-ui/core/Popover'
 import IconButton from '@material-ui/core/IconButton'
-import Typography from '@material-ui/core/Typography'
 import Badge from '@material-ui/core/Badge'
 import { withStyles } from '@material-ui/core/styles'
 import classNames from 'classnames'
@@ -110,7 +108,7 @@ export class Menu extends Component {
     if (this.state.redirect) {
       return <Redirect to="/" />
     }
-    let width = window.innerWidth
+
     return (
       <div>
         <Style.Container_User>
@@ -135,7 +133,8 @@ export class Menu extends Component {
                 </MediaQuery>
               </Grid>
               <Grid item xs={11} sm={6}>
-                <Input type="text" name="search" placeholder="Search products..." />
+                <AutoComplete />
+                {/* {  <Input type="text" name="search" placeholder="Search products..." />} */}
               </Grid>
               <Grid item xs={12} sm className={classes.icon}>
                 <IconButton
@@ -159,27 +158,6 @@ export class Menu extends Component {
                 ) : (
                   <div />
                 )}
-                <Popover
-                  id="mouse-over-popover"
-                  className={classes.popover}
-                  classes={{
-                    paper: classes.paper,
-                  }}
-                  open={open}
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                  }}
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                  }}
-                  onClose={this.handlePopoverClose}
-                  disableRestoreFocus
-                >
-                  <Typography>I use Popover.</Typography>
-                </Popover>
               </Grid>
             </Grid>
             <MediaQuery query="(min-width: 800px)">
