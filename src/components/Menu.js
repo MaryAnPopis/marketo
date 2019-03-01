@@ -7,6 +7,8 @@ import MediaQuery from 'react-responsive'
 import colors from '../style/colors'
 import logo from '../img/logo.svg'
 import Input from '../components/Input'
+import AutoCompleteProduct from './AutoCompleteProduct'
+import AutoComplete from './AutoComplete'
 import { loadLocalStorage, logOut } from '../services'
 
 import Popover from '@material-ui/core/Popover'
@@ -110,7 +112,7 @@ export class Menu extends Component {
     if (this.state.redirect) {
       return <Redirect to="/" />
     }
-    let width = window.innerWidth
+
     return (
       <div>
         <Style.Container_User>
@@ -135,7 +137,8 @@ export class Menu extends Component {
                 </MediaQuery>
               </Grid>
               <Grid item xs={11} sm={6}>
-                <Input type="text" name="search" placeholder="Search products..." />
+                <AutoComplete />
+                {/* {  <Input type="text" name="search" placeholder="Search products..." />} */}
               </Grid>
               <Grid item xs={12} sm className={classes.icon}>
                 <IconButton

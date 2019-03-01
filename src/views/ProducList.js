@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ReactPaginate from 'react-paginate'
-import styled from 'styled-components'
 
 import { fetchProductByCategory } from '../actions/productActions'
 
