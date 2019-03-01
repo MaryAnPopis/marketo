@@ -8,65 +8,6 @@ import colors from '../style/colors'
 
 import { getByParam } from '../services'
 
-const suggestions = [
-  {
-    id: 9,
-    name: 'Sony Playstation 4 Pro',
-    price: 399.95,
-    image:
-      'https://mk0conjrri8axjmrl.kinstacdn.com/wp-content/uploads/sites/2/2013/06/ps4-slim-gold-console-img-2.jpg',
-  },
-  {
-    id: 10,
-    name: 'Nintendo Switch',
-    price: 299,
-    image: 'https://i.imgur.com/KhXe2Ia.png',
-  },
-  {
-    id: 11,
-    name: 'Frankenstein',
-    price: 7.99,
-    image: 'https://images-na.ssl-images-amazon.com/images/I/51N%2B-E2eP6L._SY346_.jpg',
-  },
-  {
-    id: 12,
-    name: 'Battle Angel Alita Vol. 1',
-    price: 8.99,
-    image: 'https://images-na.ssl-images-amazon.com/images/I/51aAm32ywvL._SY346_.jpg',
-  },
-  {
-    id: 13,
-    name: 'Samsung Galaxy S9',
-    price: 999.99,
-    image:
-      'https://http2.mlstatic.com/samsung-galaxy-s9-libre-64gb-garantia-oficial-12-meses-D_NQ_NP_628238-MLA28132314889_092018-F.jpg',
-  },
-  {
-    id: 14,
-    name: 'Apple iPhoneXS',
-    price: 1000,
-    image: 'https://i.imgur.com/dBF68HP.jpg',
-  },
-]
-
-function getSuggestions(value) {
-  const inputValue = value.trim().toLowerCase()
-  const inputLength = inputValue.length
-  let count = 0
-
-  return inputLength === 0
-    ? []
-    : suggestions.filter(suggestion => {
-        const keep = count < 5 && suggestion.name.toLowerCase().slice(0, inputLength) === inputValue
-
-        if (keep) {
-          count += 1
-        }
-
-        return keep
-      })
-}
-
 // How each suggested item will be rendered
 function renderSuggestion(suggestion) {
   return (
