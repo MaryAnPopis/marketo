@@ -188,7 +188,7 @@ class ProductDetails extends React.Component {
                 </Style.DescriptionP>
               </Grid>
             </Grid>
-            <Style.AddInfo className="rubik">RELATED PRODUCTS</Style.AddInfo>
+            {/* { <Style.AddInfo className="rubik">RELATED PRODUCTS</Style.AddInfo>
             <Style.Divider />
             <Grid container spacing={24} justify="center" alignItems="center">
               {relatedProducts.map(product => {
@@ -207,7 +207,7 @@ class ProductDetails extends React.Component {
                   </Grid>
                 )
               })}
-            </Grid>
+            </Grid>} */}
           </main>
           <Footer />
         </div>

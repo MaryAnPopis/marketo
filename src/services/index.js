@@ -105,6 +105,14 @@ export const logOut = () => {
   localStorage.setItem(key, JSON.stringify({ isLogged: false }))
 }
 
+export const saveOrder = order => {
+  post('order/send-email', order)
+    .then(message => {})
+    .catch(e => console.log('SEND EMAIL', e))
+  const key = 'order'
+  localStorage.setItem(key, JSON.stringify(order))
+}
+
 export const saveToCart = product => {
   const key = 'cart'
 

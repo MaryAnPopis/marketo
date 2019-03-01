@@ -99,18 +99,18 @@ export class Home extends Component {
           </div>
           <div>
             <SliderCard
-              src="https://mk0conjrri8axjmrl.kinstacdn.com/wp-content/uploads/sites/2/2018/05/drone-slide-02.png"
+              src="https://s3-us-west-2.amazonaws.com/testinb/drone-slide-02.png"
               alt="Amazing Images & Video image"
-              productName="Amazing Images & Video"
-              url="/"
+              productName="DJI Spark Mini Drone"
+              url="/product/15"
             />
           </div>
           <div>
             <SliderCard
-              src="https://mk0conjrri8axjmrl.kinstacdn.com/wp-content/uploads/sites/2/2018/05/nest-home-slide-03.png"
+              src="https://s3-us-west-2.amazonaws.com/marketo-img/nest-home-slide-03.png"
               alt="Connect to Peace of Mind image"
               productName="Connect to Peace of Mind"
-              url="/"
+              url="/product/19"
             />
           </div>
         </Carousel>
