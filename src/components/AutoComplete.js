@@ -6,6 +6,8 @@ import AutoCompleteProduct from './AutoCompleteProduct'
 import { withStyles } from '@material-ui/core/styles'
 import colors from '../style/colors'
 
+import { getByParam } from '../services'
+
 const suggestions = [
   {
     id: 9,
@@ -123,7 +125,11 @@ export class AutoComplete extends Component {
   onChange = (event, { newValue }) => this.setState({ value: newValue })
 
   // Grab new suggestions and load them into the state
-  onSuggestionsFetchRequested = ({ value }) => this.setState({ suggestions: getSuggestions(value) })
+  onSuggestionsFetchRequested = ({ value }) => {
+    getByParam('products/search', value).then(list => {
+      this.setState({ suggestions: list })
+    })
+  }
 
   // Clear all suggestions
   onSuggestionsClearRequested = () => this.setState({ suggestions: [] })
