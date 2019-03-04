@@ -1,4 +1,4 @@
-export const API_URL = 'http://localhost:8080/v1'
+export const API_URL = 'https://marketo-api-v1.herokuapp.com/v1'
 
 export const EMPTY_STATE = {
   featuredProducts: [],
