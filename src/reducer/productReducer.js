@@ -18,25 +18,30 @@ const localShoppingCart = getShoppingCart()
 
 const INITIAL_STATE = {
   productDetails: {
-    id: 0,
-    name: ' ',
-    price: 0,
-    brand: '',
-    description: '',
-    additionalInfo: '',
-    tags: [],
-    category: {
+    product: {
       id: 0,
-      name: '',
-    },
-    images: [],
-    specs: [],
-    subCategories: [
-      {
+      name: ' ',
+      price: 0,
+      brand: '',
+      description: '',
+      additionalInfo: '',
+      tags: [],
+      category: {
         id: 0,
-        name: ' ',
+        name: '',
       },
-    ],
+      images: [],
+      specs: [],
+      subCategories: [
+        {
+          id: 0,
+          name: ' ',
+        },
+      ],
+    },
+    relatedProducts: {
+      content: [],
+    },
   },
   products: [],
   allProducts: [],
