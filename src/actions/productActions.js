@@ -87,7 +87,7 @@ export const fetchProduct = id => {
       .then(handleErrors)
       .then(res => res.json())
       .then(json => {
-        fetch(`${API_URL}/products/category/${json.category.id}?page=0&size=5/`)
+        fetch(`${API_URL}/products/category/${json.category.id}?page=0&size=4`)
           .then(handleErrors)
           .then(res => res.json())
           .then(relatedProducts => {
