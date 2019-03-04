@@ -43,6 +43,18 @@ export class ProducList extends Component {
     const idCategory = this.props.match.params.idCategory
     this.props.dispatch(fetchProductByCategory(idCategory, 0, MAX_PRODUCTS))
   }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps == undefined) {
+      return false
+    }
+
+    if (this.state.id != this.props.match.params.idCategory) {
+      this.setState({ id: this.props.match.params.idCategory })
+      this.props.dispatch(
+        fetchProductByCategory(this.props.match.params.idCategory, 0, MAX_PRODUCTS)
+      )
+    }
+  }
 
   handlePageChange = page => {
     this.setState({

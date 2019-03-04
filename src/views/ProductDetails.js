@@ -62,6 +62,17 @@ class ProductDetails extends React.Component {
     })
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps == undefined) {
+      return false
+    }
+
+    if (this.state.id != this.props.match.params.idProduct) {
+      this.setState({ id: this.props.match.params.idProduct })
+      this.props.dispatch(fetchProduct(this.props.match.params.idProduct))
+    }
+  }
+
   addToShoppingCart(productId) {
     this.props.dispatch(saveToShoppingCart(productId))
     toast.success(`Product successfully added to your cart!  `, {
@@ -188,7 +199,7 @@ class ProductDetails extends React.Component {
                 </Style.DescriptionP>
               </Grid>
             </Grid>
-            {/* { <Style.AddInfo className="rubik">RELATED PRODUCTS</Style.AddInfo>
+            <Style.AddInfo className="rubik">RELATED PRODUCTS</Style.AddInfo>
             <Style.Divider />
             <Grid container spacing={24} justify="center" alignItems="center">
               {relatedProducts.map(product => {
@@ -207,7 +218,7 @@ class ProductDetails extends React.Component {
                   </Grid>
                 )
               })}
-            </Grid>} */}
+            </Grid>
           </main>
           <Footer />
         </div>
@@ -218,7 +229,7 @@ class ProductDetails extends React.Component {
 const mapStateToProps = state => {
   return {
     productDetails: state.product.productDetails.product,
-    relatedProducts: state.product.products.content,
+    relatedProducts: state.product.productDetails.relatedProducts.content,
     addToCartLoading: state.product.addToCartLoading,
     shoppingCart: state.product.shoppingCart,
     loading: state.product.loading,
